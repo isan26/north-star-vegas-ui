@@ -9,7 +9,7 @@ import {
   ContactFormStep, 
   ThankYouGenericStep, 
   ThankYouSuccessStep
-} from './components';
+} from './components/pages';
 import ProgressBar from './components/generic/ProgressBar';
 
 const steps = [
