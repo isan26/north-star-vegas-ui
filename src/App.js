@@ -3,6 +3,8 @@ import { Container } from '@mui/material';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
   InterestStep, 
+  AiLeverageStep,
+  ConfidenceRatingStep,
   ContactFormStep, 
   ThankYouGenericStep, 
   ThankYouSuccessStep,
@@ -11,6 +13,8 @@ import {
 
 const steps = [
   { id: 'interest', component: InterestStep },
+  { id: 'aiLeverage', component: AiLeverageStep },
+  { id: 'confidence', component: ConfidenceRatingStep },
   { id: 'contact', component: ContactFormStep },
   { id: 'thankYouGeneric', component: ThankYouGenericStep },
   { id: 'thankYouSuccess', component: ThankYouSuccessStep },
@@ -20,6 +24,8 @@ function App() {
   const [currentStep, setCurrentStep] = useState(0);
   const [userData, setUserData] = useState({
     interested: null,
+    leveragesAi: null,
+    confidenceLevel: 0,
     name: '',
     email: '',
     phone: '',
@@ -28,21 +34,29 @@ function App() {
   const handleNext = (stepData = {}) => {
     setUserData(prev => ({ ...prev, ...stepData }));
     
-    // Handle routing logic based on user's interest
+    // Handle routing logic based on user responses
     if (currentStep === 0) { // Interest step
       if (stepData.interested === false) {
-        setCurrentStep(2); // Go to generic thank you
+        setCurrentStep(4); // Go to generic thank you
       } else {
-        setCurrentStep(1); // Go to contact form
+        setCurrentStep(1); // Go to AI leverage question
       }
-    } else if (currentStep === 1) { // Contact form step
-      setCurrentStep(3); // Go to success thank you
+    } else if (currentStep === 1) { // AI leverage step
+      setCurrentStep(2); // Go to confidence rating
+    } else if (currentStep === 2) { // Confidence rating step
+      setCurrentStep(3); // Go to contact form
+    } else if (currentStep === 3) { // Contact form step
+      setCurrentStep(5); // Go to success thank you
     }
   };
 
   const handlePrevious = () => {
     if (currentStep === 1) {
-      setCurrentStep(0); // From contact form back to interest
+      setCurrentStep(0); // From AI leverage back to interest
+    } else if (currentStep === 2) {
+      setCurrentStep(1); // From confidence back to AI leverage
+    } else if (currentStep === 3) {
+      setCurrentStep(2); // From contact form back to confidence
     }
   };
 
@@ -50,6 +64,8 @@ function App() {
     setCurrentStep(0);
     setUserData({
       interested: null,
+      leveragesAi: null,
+      confidenceLevel: 0,
       name: '',
       email: '',
       phone: '',
@@ -58,9 +74,18 @@ function App() {
 
   const CurrentStepComponent = steps[currentStep].component;
   
-  // Only show progress bar for the main flow (interest -> contact)
-  const showProgressBar = currentStep <= 1;
-  const progress = currentStep === 0 ? 50 : 100;
+  // Only show progress bar for the main flow (not thank you pages)
+  const showProgressBar = currentStep <= 3;
+  const progressSteps = [
+    { step: 0, progress: 25 },
+    { step: 1, progress: 50 },
+    { step: 2, progress: 75 },
+    { step: 3, progress: 100 },
+  ];
+  
+  const progressInfo = progressSteps.find(p => p.step === currentStep);
+  const progress = progressInfo ? progressInfo.progress : 0;
+  const totalSteps = 4;
 
   return (
     <Container maxWidth="md" sx={{ py: 4, minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
@@ -70,7 +95,7 @@ function App() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
         >
-          <ProgressBar progress={progress} currentStep={currentStep + 1} totalSteps={2} />
+          <ProgressBar progress={progress} currentStep={currentStep + 1} totalSteps={totalSteps} />
         </motion.div>
       )}
       
@@ -88,7 +113,7 @@ function App() {
             onNext={handleNext}
             onPrevious={handlePrevious}
             onReset={handleReset}
-            canGoBack={currentStep === 1}
+            canGoBack={currentStep > 0 && currentStep <= 3}
           />
         </motion.div>
       </AnimatePresence>

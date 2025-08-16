@@ -81,19 +81,35 @@ const ContactFormStep = ({ userData, onNext, onPrevious, canGoBack }) => {
     setSubmitError('');
 
     try {
-      // Save to Firebase
-      const docRef = await addDoc(collection(db, 'ai-consultant-applications'), {
+      // Prepare complete user data for Firebase
+      const completeUserData = {
+        // Contact Information
         name: formData.name.trim(),
         email: formData.email.trim(),
         phone: formData.phone.trim(),
-        timestamp: new Date(),
+        
+        // Survey Responses
         interested: userData.interested,
-      });
+        leveragesAi: userData.leveragesAi,
+        confidenceLevel: userData.confidenceLevel,
+        
+        // Metadata
+        timestamp: new Date(),
+        submissionId: `ai-consultant-${Date.now()}`,
+        source: 'AI Consultant Wizard'
+      };
+
+      // Save to Firebase
+      const docRef = await addDoc(collection(db, 'ai-consultant-applications'), completeUserData);
 
       console.log('Document written with ID: ', docRef.id);
       
       // Pass data to next step
-      onNext(formData);
+      onNext({
+        ...formData,
+        submissionId: completeUserData.submissionId,
+        firebaseId: docRef.id
+      });
     } catch (error) {
       console.error('Error adding document: ', error);
       setSubmitError('Failed to submit your application. Please try again.');
