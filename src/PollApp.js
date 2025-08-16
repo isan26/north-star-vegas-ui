@@ -2,9 +2,8 @@ import React, { useState } from 'react';
 import { Container } from '@mui/material';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
+  AnimatedLogoStep,
   InterestStep, 
-  AiLeverageStep,
-  ConfidenceRatingStep,
   ContactFormStep, 
   ThankYouGenericStep, 
   ThankYouSuccessStep,
@@ -12,20 +11,17 @@ import {
 } from './components';
 
 const steps = [
+  { id: 'logo', component: AnimatedLogoStep },
   { id: 'interest', component: InterestStep },
-  { id: 'aiLeverage', component: AiLeverageStep },
-  { id: 'confidence', component: ConfidenceRatingStep },
   { id: 'contact', component: ContactFormStep },
   { id: 'thankYouGeneric', component: ThankYouGenericStep },
   { id: 'thankYouSuccess', component: ThankYouSuccessStep },
 ];
 
 function PollApp() {
-  const [currentStep, setCurrentStep] = useState(0);
+  const [currentStep, setCurrentStep] = useState('logo');
   const [userData, setUserData] = useState({
     interested: null,
-    leveragesAi: null,
-    confidenceLevel: 0,
     name: '',
     email: '',
     phone: '',
@@ -34,68 +30,49 @@ function PollApp() {
   const handleNext = (stepData = {}) => {
     setUserData(prev => ({ ...prev, ...stepData }));
     
-    // Handle routing logic based on user responses
-    if (currentStep === 0) { // Interest step
-      if (stepData.interested === false) {
-        setCurrentStep(4); // Go to generic thank you
-      } else {
-        setCurrentStep(1); // Go to AI leverage question
-      }
-    } else if (currentStep === 1) { // AI leverage step
-      setCurrentStep(2); // Go to confidence rating
-    } else if (currentStep === 2) { // Confidence rating step
-      setCurrentStep(3); // Go to contact form
-    } else if (currentStep === 3) { // Contact form step
-      setCurrentStep(5); // Go to success thank you
+    switch(currentStep) {
+      case 'logo':
+        setCurrentStep('interest');
+        break;
+      case 'interest':
+        setCurrentStep(stepData.interested ? 'contact' : 'thankYouGeneric');
+        break;
+      case 'contact':
+        setCurrentStep('thankYouSuccess');
+        break;
+      default:
+        break;
     }
   };
 
   const handlePrevious = () => {
-    if (currentStep === 1) {
-      setCurrentStep(0); // From AI leverage back to interest
-    } else if (currentStep === 2) {
-      setCurrentStep(1); // From confidence back to AI leverage
-    } else if (currentStep === 3) {
-      setCurrentStep(2); // From contact form back to confidence
+    if (currentStep === 'contact') {
+      setCurrentStep('interest');
     }
   };
 
   const handleReset = () => {
-    setCurrentStep(0);
+    setCurrentStep('logo');
     setUserData({
       interested: null,
-      leveragesAi: null,
-      confidenceLevel: 0,
       name: '',
       email: '',
       phone: '',
     });
   };
 
-  const CurrentStepComponent = steps[currentStep].component;
-  
-  // Only show progress bar for the main flow (not thank you pages)
-  const showProgressBar = currentStep <= 3;
-  const progressSteps = [
-    { step: 0, progress: 25 },
-    { step: 1, progress: 50 },
-    { step: 2, progress: 75 },
-    { step: 3, progress: 100 },
-  ];
-  
-  const progressInfo = progressSteps.find(p => p.step === currentStep);
-  const progress = progressInfo ? progressInfo.progress : 0;
-  const totalSteps = 4;
+  const showProgressBar = ['interest', 'contact'].includes(currentStep);
+  const progress = currentStep === 'interest' ? 50 : 100;
 
   return (
-    <Container maxWidth="md" sx={{ py: 4, minHeight: 'calc(100vh - 64px)', display: 'flex', flexDirection: 'column' }}>
+    <Container maxWidth="md" sx={{ py: 4, minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
       {showProgressBar && (
         <motion.div
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
         >
-          <ProgressBar progress={progress} currentStep={currentStep + 1} totalSteps={totalSteps} />
+          <ProgressBar progress={progress} />
         </motion.div>
       )}
       
@@ -108,13 +85,18 @@ function PollApp() {
           transition={{ duration: 0.4, ease: 'easeInOut' }}
           style={{ flex: 1, display: 'flex', alignItems: 'center' }}
         >
-          <CurrentStepComponent
-            userData={userData}
-            onNext={handleNext}
-            onPrevious={handlePrevious}
-            onReset={handleReset}
-            canGoBack={currentStep > 0 && currentStep <= 3}
-          />
+          {steps.map(({ id, component: Component }) => 
+            currentStep === id && (
+              <Component
+                key={id}
+                userData={userData}
+                onNext={handleNext}
+                onPrevious={handlePrevious}
+                onReset={handleReset}
+                canGoBack={currentStep === 'contact'}
+              />
+            )
+          )}
         </motion.div>
       </AnimatePresence>
     </Container>
