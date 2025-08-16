@@ -104,7 +104,17 @@ function PollApp() {
   const canGoBack = ['aiLeverage', 'confidence', 'contact'].includes(currentStep);
 
   return (
-    <Container maxWidth="md" sx={{ py: 4, minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
+    <Container 
+      maxWidth={currentStep === 'logo' ? false : "md"}
+      sx={{ 
+        py: currentStep === 'logo' ? 0 : 4, 
+        minHeight: '100vh', 
+        display: 'flex', 
+        flexDirection: 'column',
+        px: currentStep === 'logo' ? 0 : undefined,
+        maxWidth: currentStep === 'logo' ? '100%' : undefined
+      }}
+    >
       {showProgressBar && (
         <motion.div
           initial={{ opacity: 0, y: -20 }}
