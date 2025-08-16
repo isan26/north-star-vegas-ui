@@ -3,16 +3,20 @@ import { Container } from '@mui/material';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
   AnimatedLogoStep,
-  InterestStep, 
+  InterestStep,
+  AiLeverageStep,
+  ConfidenceRatingStep,
   ContactFormStep, 
   ThankYouGenericStep, 
-  ThankYouSuccessStep,
-  ProgressBar 
+  ThankYouSuccessStep
 } from './components';
+import ProgressBar from './components/generic/ProgressBar';
 
 const steps = [
   { id: 'logo', component: AnimatedLogoStep },
   { id: 'interest', component: InterestStep },
+  { id: 'aiLeverage', component: AiLeverageStep },
+  { id: 'confidence', component: ConfidenceRatingStep },
   { id: 'contact', component: ContactFormStep },
   { id: 'thankYouGeneric', component: ThankYouGenericStep },
   { id: 'thankYouSuccess', component: ThankYouSuccessStep },
@@ -22,6 +26,8 @@ function PollApp() {
   const [currentStep, setCurrentStep] = useState('logo');
   const [userData, setUserData] = useState({
     interested: null,
+    aiLeverage: null,
+    confidenceLevel: 0,
     name: '',
     email: '',
     phone: '',
@@ -35,7 +41,17 @@ function PollApp() {
         setCurrentStep('interest');
         break;
       case 'interest':
-        setCurrentStep(stepData.interested ? 'contact' : 'thankYouGeneric');
+        if (stepData.interested === false) {
+          setCurrentStep('thankYouGeneric');
+        } else {
+          setCurrentStep('aiLeverage');
+        }
+        break;
+      case 'aiLeverage':
+        setCurrentStep('confidence');
+        break;
+      case 'confidence':
+        setCurrentStep('contact');
         break;
       case 'contact':
         setCurrentStep('thankYouSuccess');
@@ -46,8 +62,18 @@ function PollApp() {
   };
 
   const handlePrevious = () => {
-    if (currentStep === 'contact') {
-      setCurrentStep('interest');
+    switch(currentStep) {
+      case 'aiLeverage':
+        setCurrentStep('interest');
+        break;
+      case 'confidence':
+        setCurrentStep('aiLeverage');
+        break;
+      case 'contact':
+        setCurrentStep('confidence');
+        break;
+      default:
+        break;
     }
   };
 
@@ -55,14 +81,27 @@ function PollApp() {
     setCurrentStep('logo');
     setUserData({
       interested: null,
+      aiLeverage: null,
+      confidenceLevel: 0,
       name: '',
       email: '',
       phone: '',
     });
   };
 
-  const showProgressBar = ['interest', 'contact'].includes(currentStep);
-  const progress = currentStep === 'interest' ? 50 : 100;
+  const showProgressBar = ['interest', 'aiLeverage', 'confidence', 'contact'].includes(currentStep);
+  
+  const getProgress = () => {
+    switch(currentStep) {
+      case 'interest': return 25;
+      case 'aiLeverage': return 50;
+      case 'confidence': return 75;
+      case 'contact': return 100;
+      default: return 0;
+    }
+  };
+
+  const canGoBack = ['aiLeverage', 'confidence', 'contact'].includes(currentStep);
 
   return (
     <Container maxWidth="md" sx={{ py: 4, minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
@@ -72,7 +111,7 @@ function PollApp() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
         >
-          <ProgressBar progress={progress} />
+          <ProgressBar progress={getProgress()} />
         </motion.div>
       )}
       
@@ -93,7 +132,7 @@ function PollApp() {
                 onNext={handleNext}
                 onPrevious={handlePrevious}
                 onReset={handleReset}
-                canGoBack={currentStep === 'contact'}
+                canGoBack={canGoBack}
               />
             )
           )}
