@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
 import { Container } from '@mui/material';
 import { motion, AnimatePresence } from 'framer-motion';
-import InterestStep from './components/InterestStep';
-import ContactFormStep from './components/ContactFormStep';
-import ThankYouGenericStep from './components/ThankYouGenericStep';
-import ThankYouSuccessStep from './components/ThankYouSuccessStep';
-import ProgressBar from './components/ProgressBar';
+import { 
+  InterestStep, 
+  ContactFormStep, 
+  ThankYouGenericStep, 
+  ThankYouSuccessStep,
+  ProgressBar 
+} from './components';
 
 const steps = [
   { id: 'interest', component: InterestStep },

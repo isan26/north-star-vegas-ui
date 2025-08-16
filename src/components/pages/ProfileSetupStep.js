@@ -6,7 +6,6 @@ import {
   TextField, 
   Button, 
   Box, 
-  Avatar,
   Grid,
   Fade
 } from '@mui/material';

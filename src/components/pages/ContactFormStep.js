@@ -11,7 +11,7 @@ import {
 } from '@mui/material';
 import { motion } from 'framer-motion';
 import { collection, addDoc } from 'firebase/firestore';
-import { db } from '../firebase';
+import { db } from '../../firebase';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import SendIcon from '@mui/icons-material/Send';
 import ContactPageIcon from '@mui/icons-material/ContactPage';
@@ -32,8 +32,8 @@ const ContactFormStep = ({ userData, onNext, onPrevious, canGoBack }) => {
   };
 
   const validatePhone = (phone) => {
-    const phoneRegex = /^[\+]?[1-9][\d]{0,15}$/;
-    return phoneRegex.test(phone.replace(/[\s\-\(\)]/g, ''));
+    const phoneRegex = /^[+]?[1-9][\d]{0,15}$/;
+    return phoneRegex.test(phone.replace(/[\s\-()]/g, ''));
   };
 
   const handleChange = (field) => (event) => {
