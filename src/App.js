@@ -1,123 +1,70 @@
-import React, { useState } from 'react';
-import { Container } from '@mui/material';
-import { motion, AnimatePresence } from 'framer-motion';
-import { 
-  InterestStep, 
-  AiLeverageStep,
-  ConfidenceRatingStep,
-  ContactFormStep, 
-  ThankYouGenericStep, 
-  ThankYouSuccessStep,
-  ProgressBar 
-} from './components';
+import React from 'react';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import { Box, AppBar, Toolbar, Typography, Button } from '@mui/material';
+import { Link, useLocation } from 'react-router-dom';
+import PollApp from './PollApp';
+import Game from './game/Game';
+import HomeIcon from '@mui/icons-material/Home';
+import GamepadIcon from '@mui/icons-material/Gamepad';
 
-const steps = [
-  { id: 'interest', component: InterestStep },
-  { id: 'aiLeverage', component: AiLeverageStep },
-  { id: 'confidence', component: ConfidenceRatingStep },
-  { id: 'contact', component: ContactFormStep },
-  { id: 'thankYouGeneric', component: ThankYouGenericStep },
-  { id: 'thankYouSuccess', component: ThankYouSuccessStep },
-];
+const Navigation = () => {
+  const location = useLocation();
+  
+  return (
+    <AppBar position="static" sx={{ 
+      background: 'linear-gradient(135deg, #1cb0f6 0%, #58cc02 100%)',
+      mb: 0
+    }}>
+      <Toolbar>
+        <Typography variant="h6" component="div" sx={{ flexGrow: 1, fontWeight: 700 }}>
+          North Star Vegas 🌟
+        </Typography>
+        
+        <Box sx={{ display: 'flex', gap: 2 }}>
+          <Button 
+            color="inherit" 
+            component={Link} 
+            to="/"
+            startIcon={<HomeIcon />}
+            variant={location.pathname === '/' ? 'outlined' : 'text'}
+            sx={{ 
+              color: 'white',
+              borderColor: location.pathname === '/' ? 'white' : 'transparent'
+            }}
+          >
+            Poll
+          </Button>
+          <Button 
+            color="inherit" 
+            component={Link} 
+            to="/game"
+            startIcon={<GamepadIcon />}
+            variant={location.pathname.startsWith('/game') ? 'outlined' : 'text'}
+            sx={{ 
+              color: 'white',
+              borderColor: location.pathname.startsWith('/game') ? 'white' : 'transparent'
+            }}
+          >
+            AI Game
+          </Button>
+        </Box>
+      </Toolbar>
+    </AppBar>
+  );
+};
 
 function App() {
-  const [currentStep, setCurrentStep] = useState(0);
-  const [userData, setUserData] = useState({
-    interested: null,
-    leveragesAi: null,
-    confidenceLevel: 0,
-    name: '',
-    email: '',
-    phone: '',
-  });
-
-  const handleNext = (stepData = {}) => {
-    setUserData(prev => ({ ...prev, ...stepData }));
-    
-    // Handle routing logic based on user responses
-    if (currentStep === 0) { // Interest step
-      if (stepData.interested === false) {
-        setCurrentStep(4); // Go to generic thank you
-      } else {
-        setCurrentStep(1); // Go to AI leverage question
-      }
-    } else if (currentStep === 1) { // AI leverage step
-      setCurrentStep(2); // Go to confidence rating
-    } else if (currentStep === 2) { // Confidence rating step
-      setCurrentStep(3); // Go to contact form
-    } else if (currentStep === 3) { // Contact form step
-      setCurrentStep(5); // Go to success thank you
-    }
-  };
-
-  const handlePrevious = () => {
-    if (currentStep === 1) {
-      setCurrentStep(0); // From AI leverage back to interest
-    } else if (currentStep === 2) {
-      setCurrentStep(1); // From confidence back to AI leverage
-    } else if (currentStep === 3) {
-      setCurrentStep(2); // From contact form back to confidence
-    }
-  };
-
-  const handleReset = () => {
-    setCurrentStep(0);
-    setUserData({
-      interested: null,
-      leveragesAi: null,
-      confidenceLevel: 0,
-      name: '',
-      email: '',
-      phone: '',
-    });
-  };
-
-  const CurrentStepComponent = steps[currentStep].component;
-  
-  // Only show progress bar for the main flow (not thank you pages)
-  const showProgressBar = currentStep <= 3;
-  const progressSteps = [
-    { step: 0, progress: 25 },
-    { step: 1, progress: 50 },
-    { step: 2, progress: 75 },
-    { step: 3, progress: 100 },
-  ];
-  
-  const progressInfo = progressSteps.find(p => p.step === currentStep);
-  const progress = progressInfo ? progressInfo.progress : 0;
-  const totalSteps = 4;
-
   return (
-    <Container maxWidth="md" sx={{ py: 4, minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
-      {showProgressBar && (
-        <motion.div
-          initial={{ opacity: 0, y: -20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
-        >
-          <ProgressBar progress={progress} currentStep={currentStep + 1} totalSteps={totalSteps} />
-        </motion.div>
-      )}
-      
-      <AnimatePresence mode="wait">
-        <motion.div
-          key={currentStep}
-          initial={{ opacity: 0, x: 100 }}
-          animate={{ opacity: 1, x: 0 }}
-          exit={{ opacity: 0, x: -100 }}
-          transition={{ duration: 0.4, ease: 'easeInOut' }}
-          style={{ flex: 1, display: 'flex', alignItems: 'center' }}
-        >
-          <CurrentStepComponent
-            userData={userData}
-            onNext={handleNext}
-            onPrevious={handlePrevious}
-            onReset={handleReset}
-            canGoBack={currentStep > 0 && currentStep <= 3}
-          />
-        </motion.div>
-      </AnimatePresence>
-    </Container>
+    <Router>
+      <Box sx={{ minHeight: '100vh', backgroundColor: '#f5f5f5' }}>
+        <Navigation />
+        <Routes>
+          <Route path="/" element={<PollApp />} />
+          <Route path="/game" element={<Game />} />
+          <Route path="*" element={<Navigate to="/" replace />} />
+        </Routes>
+      </Box>
+    </Router>
   );
 }
 
