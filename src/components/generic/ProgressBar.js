@@ -6,7 +6,7 @@ const ProgressBar = ({ progress, currentStep, totalSteps }) => {
   return (
     <Box sx={{ mb: 4 }}>
       <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2 }}>
-        <Typography variant="h6" sx={{ color: 'text.secondary' }}>
+        <Typography variant="h6" sx={{ color: 'black' }}>
           Progress
         </Typography>
         <motion.div
@@ -41,7 +41,7 @@ const ProgressBar = ({ progress, currentStep, totalSteps }) => {
           }}
         />
       </motion.div>
-      <Typography variant="body2" sx={{ mt: 1, textAlign: 'right', color: 'text.secondary' }}>
+      <Typography variant="body2" sx={{ mt: 1, textAlign: 'right', color: 'black' }}>
         {Math.round(progress)}% complete
       </Typography>
     </Box>
