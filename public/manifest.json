@@ -1,0 +1,71 @@
+{
+  "short_name": "North Star Vegas",
+  "name": "North Star Vegas - AI Consultant & Knowledge Quest",
+  "description": "AI consultant application and interactive AI knowledge quiz game with progressive levels",
+  "icons": [
+    {
+      "src": "favicon.ico",
+      "sizes": "64x64 32x32 24x24 16x16",
+      "type": "image/x-icon"
+    },
+    {
+      "src": "logo192.png",
+      "type": "image/png",
+      "sizes": "192x192"
+    },
+    {
+      "src": "logo512.png",
+      "type": "image/png",
+      "sizes": "512x512"
+    }
+  ],
+  "start_url": ".",
+  "display": "standalone",
+  "theme_color": "#1cb0f6",
+  "background_color": "#ffffff",
+  "orientation": "portrait-primary",
+  "categories": ["education", "games", "productivity"],
+  "lang": "en-US",
+  "scope": "/",
+  "prefer_related_applications": false,
+  "screenshots": [
+    {
+      "src": "screenshot-wide.png",
+      "sizes": "1280x720",
+      "type": "image/png",
+      "form_factor": "wide"
+    },
+    {
+      "src": "screenshot-narrow.png",
+      "sizes": "750x1334",
+      "type": "image/png",
+      "form_factor": "narrow"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "AI Consultant Poll",
+      "short_name": "Poll",
+      "description": "Take the AI consultant interest survey",
+      "url": "/",
+      "icons": [
+        {
+          "src": "logo192.png",
+          "sizes": "192x192"
+        }
+      ]
+    },
+    {
+      "name": "AI Knowledge Game",
+      "short_name": "Game",
+      "description": "Play the AI knowledge quiz game",
+      "url": "/game",
+      "icons": [
+        {
+          "src": "logo192.png",
+          "sizes": "192x192"
+        }
+      ]
+    }
+  ]
+}
