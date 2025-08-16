@@ -4,6 +4,7 @@ import { Box, AppBar, Toolbar, Typography, Button } from '@mui/material';
 import { Link, useLocation } from 'react-router-dom';
 import PollApp from './PollApp';
 import Game from './game/Game';
+import OfflineIndicator from './components/OfflineIndicator';
 import HomeIcon from '@mui/icons-material/Home';
 import GamepadIcon from '@mui/icons-material/Gamepad';
 
@@ -58,6 +59,7 @@ function App() {
     <Router>
       <Box sx={{ minHeight: '100vh', backgroundColor: '#f5f5f5' }}>
         <Navigation />
+        <OfflineIndicator />
         <Routes>
           <Route path="/" element={<PollApp />} />
           <Route path="/game" element={<Game />} />

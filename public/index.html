@@ -3,15 +3,35 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="theme-color" content="#58cc02" />
+    <meta name="theme-color" content="#1cb0f6" />
+    
+    <!-- PWA Meta Tags -->
+    <meta name="application-name" content="North Star Vegas" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+    <meta name="apple-mobile-web-app-title" content="North Star Vegas" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="msapplication-TileColor" content="#1cb0f6" />
+    <meta name="msapplication-tap-highlight" content="no" />
+    
+    <!-- Description -->
     <meta
       name="description"
-      content="A fun Duolingo-style wizard application"
+      content="AI consultant application and interactive AI knowledge quiz game with progressive levels"
     />
-    <title>North Star Vegas UI</title>
+    
+    <!-- Icons and Manifest -->
+    <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+    <link rel="apple-touch-icon" href="/logo192.png" />
+    <link rel="manifest" href="/manifest.json" />
+    
+    <title>North Star Vegas - AI Consultant & Knowledge Quest</title>
+    
+    <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    
     <style>
       body {
         margin: 0;
@@ -28,10 +48,48 @@
         font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
           monospace;
       }
+      
+      /* PWA Install Prompt Styles */
+      .pwa-install-prompt {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        background: linear-gradient(135deg, #1cb0f6 0%, #58cc02 100%);
+        color: white;
+        padding: 12px 20px;
+        border-radius: 25px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+        font-weight: 600;
+        cursor: pointer;
+        z-index: 1000;
+        animation: slideUp 0.3s ease-out;
+        display: none;
+      }
+      
+      .pwa-install-prompt:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 16px rgba(0,0,0,0.3);
+      }
+      
+      @keyframes slideUp {
+        from {
+          transform: translateY(100px);
+          opacity: 0;
+        }
+        to {
+          transform: translateY(0);
+          opacity: 1;
+        }
+      }
     </style>
   </head>
   <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>
     <div id="root"></div>
+    
+    <!-- PWA Install Prompt -->
+    <div id="pwa-install-prompt" class="pwa-install-prompt">
+      📱 Install App
+    </div>
   </body>
 </html>
