@@ -1,6 +1,5 @@
 import { initializeApp } from 'firebase/app';
 import { getFirestore } from 'firebase/firestore';
-import { getAnalytics } from "firebase/analytics";
 
 // Your Firebase configuration
 // Replace these values with your actual Firebase project configuration
