@@ -62,8 +62,15 @@ const InterestStep = ({ onNext }) => {
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.7, duration: 0.5 }}
             >
-              <Typography variant="h5" sx={{ mb: 5, color: 'text.secondary', lineHeight: 1.6 }}>
-                Are you interested in working as an AI consultant?
+              <Typography variant="h5" sx={{
+                mb: 5,
+                color: 'text.secondary',
+                lineHeight: 1.6,
+                fontSize: 50,
+                fontFamily: "'Fredoka', sans-serif", // local override if needed
+              }}
+            >
+              Are you interested in setting up or being a part of an AI Startup?
                 <br />
                 <Typography variant="body1" sx={{ mt: 2, fontStyle: 'italic' }}>
                   Join our team of experts helping businesses leverage artificial intelligence! 🚀

@@ -31,7 +31,7 @@ const theme = createTheme({
     },
   },
   typography: {
-    fontFamily: 'Nunito, Arial, sans-serif',
+    fontFamily: "'Fredoka', 'Nunito, Arial, sans-serif'",
     h1: {
       fontWeight: 800,
       fontSize: '2.5rem',
