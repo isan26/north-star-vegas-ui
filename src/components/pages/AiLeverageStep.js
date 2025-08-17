@@ -68,7 +68,7 @@ const AiLeverageStep = ({ userData, onNext, onPrevious, canGoBack }) => {
                 lineHeight: 1.6,
                 fontSize: '1.8rem',
               }}>
-                Do you currently leverage AI as a consultant?
+                Do you currently use AI?
                 <br />
                 <Typography variant="body1" sx={{ mt: 2, fontStyle: 'italic' }}>
                   This helps us understand your experience level 🤖
