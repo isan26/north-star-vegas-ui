@@ -1,7 +1,8 @@
-const CACHE_NAME = 'north-star-vegas-v1';
+const CACHE_NAME = 'north-star-vegas-v2';
 const urlsToCache = [
   '/',
   '/game',
+  '/llc-game',
   '/static/js/bundle.js',
   '/static/css/main.css',
   '/manifest.json',
@@ -121,35 +122,64 @@ self.addEventListener('fetch', (event) => {
   );
 });
 
-// Handle background sync (for future implementation)
+// Handle background sync
 self.addEventListener('sync', (event) => {
   console.log('Background sync triggered:', event.tag);
   
-  if (event.tag === 'background-sync-game-progress') {
+  if (event.tag === 'background-sync-ai-game-progress') {
     event.waitUntil(
-      // Sync game progress when back online
-      syncGameProgress()
+      syncGameProgress('aiGameProgress')
+    );
+  }
+  
+  if (event.tag === 'background-sync-llc-game-progress') {
+    event.waitUntil(
+      syncGameProgress('llcGameProgress')
+    );
+  }
+  
+  if (event.tag === 'background-sync-poll-data') {
+    event.waitUntil(
+      syncPollData()
     );
   }
 });
 
-// Handle push notifications (for future implementation)
+// Handle push notifications
 self.addEventListener('push', (event) => {
   console.log('Push notification received:', event);
   
-  const options = {
-    body: event.data ? event.data.text() : 'New AI quiz level unlocked!',
+  let notificationData = {
+    title: 'North Star Vegas',
+    body: 'New content available!',
     icon: '/logo192.png',
-    badge: '/logo192.png',
+    badge: '/logo192.png'
+  };
+
+  // Parse push data if available
+  if (event.data) {
+    try {
+      const pushData = event.data.json();
+      notificationData = { ...notificationData, ...pushData };
+    } catch (e) {
+      notificationData.body = event.data.text();
+    }
+  }
+
+  const options = {
+    body: notificationData.body,
+    icon: notificationData.icon,
+    badge: notificationData.badge,
     vibrate: [100, 50, 100],
     data: {
       dateOfArrival: Date.now(),
-      primaryKey: '2'
+      primaryKey: notificationData.primaryKey || '1',
+      url: notificationData.url || '/'
     },
     actions: [
       {
         action: 'explore',
-        title: 'Play Now',
+        title: 'Open App',
         icon: '/logo192.png'
       },
       {
@@ -161,7 +191,7 @@ self.addEventListener('push', (event) => {
   };
 
   event.waitUntil(
-    self.registration.showNotification('North Star Vegas', options)
+    self.registration.showNotification(notificationData.title, options)
   );
 });
 
@@ -170,10 +200,11 @@ self.addEventListener('notificationclick', (event) => {
   console.log('Notification clicked:', event);
   event.notification.close();
 
+  const targetUrl = event.notification.data.url || '/';
+
   if (event.action === 'explore') {
-    // Open the game page
     event.waitUntil(
-      clients.openWindow('/game')
+      clients.openWindow(targetUrl)
     );
   } else if (event.action === 'close') {
     // Just close the notification
@@ -181,30 +212,200 @@ self.addEventListener('notificationclick', (event) => {
   } else {
     // Default action - open the app
     event.waitUntil(
-      clients.openWindow('/')
+      clients.openWindow(targetUrl)
     );
   }
 });
 
-// Helper function for syncing game progress (placeholder)
-async function syncGameProgress() {
+// Handle message events from the main thread
+self.addEventListener('message', (event) => {
+  console.log('Service Worker received message:', event.data);
+  
+  if (event.data && event.data.type === 'SYNC_GAME_PROGRESS') {
+    // Trigger background sync for game progress
+    self.registration.sync.register(`background-sync-${event.data.gameType}-game-progress`);
+  }
+  
+  if (event.data && event.data.type === 'SYNC_POLL_DATA') {
+    // Trigger background sync for poll data
+    self.registration.sync.register('background-sync-poll-data');
+  }
+  
+  if (event.data && event.data.type === 'SKIP_WAITING') {
+    self.skipWaiting();
+  }
+});
+
+// Helper function for syncing game progress
+async function syncGameProgress(storageKey) {
   try {
-    // This would sync local storage data with a remote server
-    // For now, we'll just log that sync was attempted
-    console.log('Syncing game progress...');
+    console.log(`Syncing ${storageKey}...`);
     
-    const gameProgress = JSON.parse(localStorage.getItem('aiGameProgress') || '{}');
-    console.log('Current game progress:', gameProgress);
+    // Get game progress from localStorage
+    const gameProgressStr = await getFromIndexedDB(storageKey) || 
+                           (typeof localStorage !== 'undefined' ? localStorage.getItem(storageKey) : null);
+    
+    if (!gameProgressStr) {
+      console.log(`No ${storageKey} data found to sync`);
+      return Promise.resolve();
+    }
+
+    const gameProgress = JSON.parse(gameProgressStr);
+    console.log(`Current ${storageKey}:`, gameProgress);
     
     // In a real implementation, you'd send this data to your server
-    // await fetch('/api/sync-progress', {
+    // const response = await fetch('/api/sync-progress', {
     //   method: 'POST',
-    //   body: JSON.stringify(gameProgress)
+    //   headers: {
+    //     'Content-Type': 'application/json',
+    //   },
+    //   body: JSON.stringify({
+    //     type: storageKey,
+    //     data: gameProgress,
+    //     timestamp: new Date().toISOString()
+    //   })
     // });
     
+    // if (!response.ok) {
+    //   throw new Error(`Failed to sync ${storageKey}: ${response.statusText}`);
+    // }
+    
+    console.log(`${storageKey} synced successfully`);
     return Promise.resolve();
   } catch (error) {
-    console.error('Failed to sync game progress:', error);
+    console.error(`Failed to sync ${storageKey}:`, error);
     return Promise.reject(error);
   }
 }
+
+// Helper function for syncing poll data
+async function syncPollData() {
+  try {
+    console.log('Syncing poll data...');
+    
+    // Get poll data from localStorage
+    const pollDataStr = await getFromIndexedDB('pollUserData') || 
+                       (typeof localStorage !== 'undefined' ? localStorage.getItem('pollUserData') : null);
+    
+    if (!pollDataStr) {
+      console.log('No poll data found to sync');
+      return Promise.resolve();
+    }
+
+    const pollData = JSON.parse(pollDataStr);
+    console.log('Current poll data:', pollData);
+    
+    // In a real implementation, you'd send this data to your server
+    // const response = await fetch('/api/sync-poll', {
+    //   method: 'POST',
+    //   headers: {
+    //     'Content-Type': 'application/json',
+    //   },
+    //   body: JSON.stringify({
+    //     ...pollData,
+    //     timestamp: new Date().toISOString()
+    //   })
+    // });
+    
+    // if (!response.ok) {
+    //   throw new Error(`Failed to sync poll data: ${response.statusText}`);
+    // }
+    
+    console.log('Poll data synced successfully');
+    return Promise.resolve();
+  } catch (error) {
+    console.error('Failed to sync poll data:', error);
+    return Promise.reject(error);
+  }
+}
+
+// Helper function to get data from IndexedDB (fallback storage)
+function getFromIndexedDB(key) {
+  return new Promise((resolve, reject) => {
+    if (!('indexedDB' in self)) {
+      resolve(null);
+      return;
+    }
+
+    const request = indexedDB.open('NorthStarVegasDB', 1);
+    
+    request.onerror = () => resolve(null);
+    
+    request.onsuccess = (event) => {
+      const db = event.target.result;
+      
+      if (!db.objectStoreNames.contains('gameData')) {
+        resolve(null);
+        return;
+      }
+      
+      const transaction = db.transaction(['gameData'], 'readonly');
+      const store = transaction.objectStore('gameData');
+      const getRequest = store.get(key);
+      
+      getRequest.onsuccess = () => {
+        resolve(getRequest.result ? getRequest.result.value : null);
+      };
+      
+      getRequest.onerror = () => resolve(null);
+    };
+    
+    request.onupgradeneeded = (event) => {
+      const db = event.target.result;
+      if (!db.objectStoreNames.contains('gameData')) {
+        db.createObjectStore('gameData', { keyPath: 'key' });
+      }
+    };
+  });
+}
+
+// Helper function to store data in IndexedDB
+function storeInIndexedDB(key, value) {
+  return new Promise((resolve, reject) => {
+    if (!('indexedDB' in self)) {
+      resolve();
+      return;
+    }
+
+    const request = indexedDB.open('NorthStarVegasDB', 1);
+    
+    request.onerror = () => resolve();
+    
+    request.onsuccess = (event) => {
+      const db = event.target.result;
+      
+      if (!db.objectStoreNames.contains('gameData')) {
+        resolve();
+        return;
+      }
+      
+      const transaction = db.transaction(['gameData'], 'readwrite');
+      const store = transaction.objectStore('gameData');
+      
+      store.put({ key, value, timestamp: Date.now() });
+      resolve();
+    };
+    
+    request.onupgradeneeded = (event) => {
+      const db = event.target.result;
+      if (!db.objectStoreNames.contains('gameData')) {
+        db.createObjectStore('gameData', { keyPath: 'key' });
+      }
+    };
+  });
+}
+
+// Periodic background sync for data persistence
+self.addEventListener('periodicsync', (event) => {
+  console.log('Periodic background sync triggered:', event.tag);
+  
+  if (event.tag === 'backup-game-data') {
+    event.waitUntil(
+      Promise.all([
+        syncGameProgress('aiGameProgress'),
+        syncGameProgress('llcGameProgress'),
+        syncPollData()
+      ])
+    );
+  }
+});

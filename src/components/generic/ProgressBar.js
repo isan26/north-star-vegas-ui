@@ -2,7 +2,15 @@ import React from 'react';
 import { Box, LinearProgress, Typography, Chip } from '@mui/material';
 import { motion } from 'framer-motion';
 
-const ProgressBar = ({ progress, currentStep, totalSteps }) => {
+const ProgressBar = ({ progress }) => {
+  const getCurrentStep = () => {
+    if (progress === 25) return 1;
+    if (progress === 50) return 2;
+    if (progress === 75) return 3;
+    if (progress === 100) return 4;
+    return 1;
+  };
+
   return (
     <Box sx={{ mb: 4 }}>
       <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2 }}>
@@ -15,7 +23,7 @@ const ProgressBar = ({ progress, currentStep, totalSteps }) => {
           transition={{ delay: 0.3 }}
         >
           <Chip 
-            label={`${currentStep} of ${totalSteps}`} 
+            label={`${getCurrentStep()} of 4`} 
             color="primary" 
             variant="filled"
             sx={{ fontWeight: 700 }}
@@ -23,15 +31,14 @@ const ProgressBar = ({ progress, currentStep, totalSteps }) => {
         </motion.div>
       </Box>
       <motion.div
-        initial={{ scaleX: 0 }}
-        animate={{ scaleX: 1 }}
-        transition={{ duration: 0.5, ease: 'easeOut' }}
-        style={{ transformOrigin: 'left' }}
+        initial={{ opacity: 0, y: 10 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5 }}
       >
-        <LinearProgress 
-          variant="determinate" 
-          value={progress} 
-          sx={{ 
+        <LinearProgress
+          variant="determinate"
+          value={progress}
+          sx={{
             height: 12,
             borderRadius: 6,
             backgroundColor: 'rgba(88, 204, 2, 0.1)',

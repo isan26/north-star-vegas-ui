@@ -15,9 +15,8 @@ import { motion, AnimatePresence } from 'framer-motion';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import CheckIcon from '@mui/icons-material/Check';
-import { saveGameProgress } from '../data/gameData';
 
-const GameLevel = ({ level, gameData, onComplete, onBack }) => {
+const GameLevel = ({ level, gameData, onComplete, onBack, storageKey = 'aiGameProgress' }) => {
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [selectedAnswers, setSelectedAnswers] = useState({});
   const [showResults, setShowResults] = useState(false);
@@ -49,8 +48,8 @@ const GameLevel = ({ level, gameData, onComplete, onBack }) => {
       setScore(correctAnswers);
       setShowResults(true);
       
-      // Save progress
-      const percentage = saveGameProgress(level, correctAnswers, questions.length);
+      // Save progress with dynamic storage key
+      const percentage = saveGameProgressWithKey(storageKey, level, correctAnswers, questions.length);
       
       // Call onComplete with results
       setTimeout(() => {
@@ -63,6 +62,28 @@ const GameLevel = ({ level, gameData, onComplete, onBack }) => {
         });
       }, 2000);
     }
+  };
+
+  // Helper function to save progress with custom storage key
+  const saveGameProgressWithKey = (key, level, score, totalQuestions) => {
+    const percentage = Math.round((score / totalQuestions) * 100);
+    const progress = localStorage.getItem(key);
+    let parsedProgress = {};
+    
+    if (progress) {
+      parsedProgress = JSON.parse(progress);
+    }
+    
+    parsedProgress[level] = {
+      score,
+      totalQuestions,
+      percentage,
+      completed: true,
+      timestamp: new Date().toISOString()
+    };
+    
+    localStorage.setItem(key, JSON.stringify(parsedProgress));
+    return percentage;
   };
 
   const handlePrevious = () => {
