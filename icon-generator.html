@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Generate App Icons</title>
+    <style>
+        .icon {
+            width: 192px;
+            height: 192px;
+            background: linear-gradient(135deg, #1cb0f6 0%, #58cc02 100%);
+            border-radius: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-family: Arial, sans-serif;
+            font-size: 72px;
+            font-weight: bold;
+            margin: 20px;
+        }
+        
+        .icon-512 {
+            width: 512px;
+            height: 512px;
+            font-size: 192px;
+            border-radius: 64px;
+        }
+        
+        .icon-maskable {
+            border-radius: 0;
+            background: #1cb0f6;
+            position: relative;
+        }
+        
+        .icon-maskable::before {
+            content: '';
+            position: absolute;
+            top: 10%;
+            left: 10%;
+            right: 10%;
+            bottom: 10%;
+            background: linear-gradient(135deg, #1cb0f6 0%, #58cc02 100%);
+            border-radius: 20%;
+        }
+    </style>
+</head>
+<body>
+    <h2>Instructions: Right-click each icon and "Save image as..." to download</h2>
+    
+    <h3>192x192 Icon (save as icon-192.png)</h3>
+    <div class="icon" id="icon192">AI</div>
+    
+    <h3>512x512 Icon (save as icon-512.png)</h3>
+    <div class="icon icon-512" id="icon512">AI</div>
+    
+    <h3>192x192 Maskable Icon (save as icon-192-maskable.png)</h3>
+    <div class="icon icon-maskable" id="iconMaskable">
+        <span style="position: relative; z-index: 10;">AI</span>
+    </div>
+
+    <script>
+        // Convert HTML elements to canvas and generate downloadable images
+        function createIcon(elementId, filename, size) {
+            const element = document.getElementById(elementId);
+            const canvas = document.createElement('canvas');
+            canvas.width = size;
+            canvas.height = size;
+            const ctx = canvas.getContext('2d');
+            
+            // Create gradient
+            const gradient = ctx.createLinearGradient(0, 0, size, size);
+            gradient.addColorStop(0, '#1cb0f6');
+            gradient.addColorStop(1, '#58cc02');
+            
+            // Fill background with gradient
+            ctx.fillStyle = gradient;
+            ctx.fillRect(0, 0, size, size);
+            
+            // Add rounded corners (approximate)
+            ctx.globalCompositeOperation = 'destination-in';
+            ctx.beginPath();
+            const radius = size * 0.125; // 12.5% radius
+            ctx.roundRect(0, 0, size, size, radius);
+            ctx.fill();
+            
+            // Reset composite operation
+            ctx.globalCompositeOperation = 'source-over';
+            
+            // Add text
+            ctx.fillStyle = 'white';
+            ctx.font = `bold ${size * 0.375}px Arial`;
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillText('AI', size/2, size/2);
+            
+            // Create download link
+            canvas.toBlob(function(blob) {
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = filename;
+                a.click();
+                URL.revokeObjectURL(url);
+            });
+        }
+        
+        // Add download buttons
+        setTimeout(() => {
+            const downloadDiv = document.createElement('div');
+            downloadDiv.innerHTML = `
+                <h3>Download Icons</h3>
+                <button onclick="createIcon('icon192', 'icon-192.png', 192)">Download 192x192</button>
+                <button onclick="createIcon('icon512', 'icon-512.png', 512)">Download 512x512</button>
+                <button onclick="createIcon('iconMaskable', 'icon-192-maskable.png', 192)">Download Maskable</button>
+                <br><br>
+                <p><strong>Note:</strong> After downloading all icons, save them to the /public folder of your project.</p>
+            `;
+            document.body.appendChild(downloadDiv);
+        }, 1000);
+    </script>
+</body>
+</html>
