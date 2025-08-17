@@ -1,108 +1,108 @@
 export const gameData = {
   1: {
-    title: "Level 1: Basics of AI",
-    description: "Test your knowledge of AI fundamentals!",
+    title: "Level 1: AI & Career Basics",
+    description: "Test your knowledge about AI and the job market!",
     color: "#58cc02",
-    icon: "🤖",
+    icon: "💼",
     questions: [
       {
         id: 1,
-        question: "Which of these is an example of AI we use daily?",
+        question: "Which skill is MOST important for college students in the AI era?",
         options: [
-          { text: "A toaster", correct: false },
-          { text: "Google Maps navigation", correct: true },
-          { text: "A bicycle", correct: false },
-          { text: "A hammer", correct: false }
+          { text: "Memorizing facts", correct: false },
+          { text: "Critical thinking and problem-solving", correct: true },
+          { text: "Handwriting", correct: false },
+          { text: "Using a calculator", correct: false }
         ]
       },
       {
         id: 2,
-        question: "Which company developed the AI system 'ChatGPT'?",
+        question: "If AI automates your dream job, what's the BEST first step?",
         options: [
-          { text: "Microsoft", correct: false },
-          { text: "OpenAI", correct: true },
-          { text: "Tesla", correct: false },
-          { text: "Amazon", correct: false }
+          { text: "Give up and panic", correct: false },
+          { text: "Learn how to work WITH AI tools", correct: true },
+          { text: "Ignore technology completely", correct: false },
+          { text: "Only apply to old-fashioned jobs", correct: false }
         ]
       },
       {
         id: 3,
-        question: "Which of these assistants uses AI?",
+        question: "Which jobs are LEAST likely to be replaced by AI?",
         options: [
-          { text: "Siri", correct: true },
-          { text: "A stapler", correct: false },
-          { text: "A light switch", correct: false },
-          { text: "A frying pan", correct: false }
+          { text: "Creative problem-solving roles", correct: true },
+          { text: "Data entry jobs", correct: false },
+          { text: "Basic accounting", correct: false },
+          { text: "Simple customer service", correct: false }
         ]
       },
       {
         id: 4,
-        question: "What does AI stand for?",
+        question: "How should college students prepare for an AI-integrated workplace?",
         options: [
-          { text: "Artificial Imagination", correct: false },
-          { text: "Artificial Intelligence", correct: true },
-          { text: "Automated Internet", correct: false },
-          { text: "Advanced Integration", correct: false }
+          { text: "Avoid learning about AI", correct: false },
+          { text: "Learn AI tools relevant to their field", correct: true },
+          { text: "Only study traditional methods", correct: false },
+          { text: "Wait until graduation to think about it", correct: false }
         ]
       },
       {
         id: 5,
-        question: "Which of these is NOT an AI application?",
+        question: "What's a smart way to make yourself 'AI-proof' in your career?",
         options: [
-          { text: "Image recognition", correct: false },
-          { text: "Predictive text", correct: false },
-          { text: "Video game bots", correct: false },
-          { text: "Paperclip", correct: true }
+          { text: "Develop uniquely human skills like empathy and creativity", correct: true },
+          { text: "Avoid all technology", correct: false },
+          { text: "Only work in jobs that don't use computers", correct: false },
+          { text: "Learn one skill and never change", correct: false }
         ]
       },
       {
         id: 6,
-        question: "Which AI system can create pictures from text prompts?",
+        question: "If you're studying marketing, how could you integrate AI?",
         options: [
-          { text: "DALL·E", correct: true },
-          { text: "Spotify", correct: false },
-          { text: "Netflix", correct: false },
-          { text: "Google Drive", correct: false }
+          { text: "Use AI for data analysis and customer insights", correct: true },
+          { text: "Avoid digital marketing completely", correct: false },
+          { text: "Only use traditional print ads", correct: false },
+          { text: "Let AI do everything without human input", correct: false }
         ]
       },
       {
         id: 7,
-        question: "What is a benefit of AI in healthcare?",
+        question: "What's the biggest mistake students make about AI and careers?",
         options: [
-          { text: "It can replace doctors completely", correct: false },
-          { text: "It can help detect diseases early", correct: true },
-          { text: "It makes medicine taste better", correct: false },
-          { text: "It reduces hospital electricity use", correct: false }
+          { text: "Learning too much about technology", correct: false },
+          { text: "Thinking AI will replace ALL human workers", correct: true },
+          { text: "Using AI tools for schoolwork", correct: false },
+          { text: "Staying curious about new technology", correct: false }
         ]
       },
       {
         id: 8,
-        question: "Which of these is a common concern about AI?",
+        question: "How can AI actually HELP you find a job?",
         options: [
-          { text: "It never gets tired", correct: false },
-          { text: "It might take away some jobs", correct: true },
-          { text: "It can work faster", correct: false },
-          { text: "It uses electricity", correct: false }
+          { text: "AI can optimize your resume for job applications", correct: true },
+          { text: "AI will do job interviews for you", correct: false },
+          { text: "AI guarantees you'll get any job", correct: false },
+          { text: "AI eliminates the need for networking", correct: false }
         ]
       },
       {
         id: 9,
-        question: "Which field uses AI for fraud detection?",
+        question: "If you're worried about AI taking your future job, you should:",
         options: [
-          { text: "Cooking", correct: false },
-          { text: "Banking", correct: true },
-          { text: "Painting", correct: false },
-          { text: "Gardening", correct: false }
+          { text: "Panic and change majors immediately", correct: false },
+          { text: "Learn how to collaborate with AI in your field", correct: true },
+          { text: "Avoid learning about AI completely", correct: false },
+          { text: "Only apply to government jobs", correct: false }
         ]
       },
       {
         id: 10,
-        question: "Which of these is a simple example of machine learning?",
+        question: "What's the best mindset about AI for college students?",
         options: [
-          { text: "A cat learning to meow", correct: false },
-          { text: "An email app filtering spam", correct: true },
-          { text: "Turning on a lamp", correct: false },
-          { text: "Water boiling", correct: false }
+          { text: "AI is my enemy and will steal my job", correct: false },
+          { text: "AI is a tool that can enhance my capabilities", correct: true },
+          { text: "AI doesn't affect my field at all", correct: false },
+          { text: "AI is too complicated to understand", correct: false }
         ]
       }
     ]
