@@ -33,6 +33,9 @@ function PollApp() {
     phone: '',
   });
 
+  // Add debugging
+  console.log('Current step:', currentStep);
+
   const handleNext = (stepData = {}) => {
     setUserData(prev => ({ ...prev, ...stepData }));
     
@@ -140,7 +143,7 @@ function PollApp() {
                 key={id}
                 userData={userData}
                 onNext={handleNext}
-                onPrevious={handlePrevious}
+                onPrevious={canGoBack ? handlePrevious : undefined}
                 onReset={handleReset}
                 canGoBack={canGoBack}
               />

@@ -4,9 +4,11 @@ import { Box, AppBar, Toolbar, Typography, Button } from '@mui/material';
 import { Link, useLocation } from 'react-router-dom';
 import PollApp from './PollApp';
 import Game from './game/Game';
+import LLCGame from './game/LLCGame';
 import OfflineIndicator from './components/OfflineIndicator';
 import HomeIcon from '@mui/icons-material/Home';
 import GamepadIcon from '@mui/icons-material/Gamepad';
+import BusinessIcon from '@mui/icons-material/Business';
 
 const Navigation = () => {
   const location = useLocation();
@@ -40,13 +42,26 @@ const Navigation = () => {
             component={Link} 
             to="/game"
             startIcon={<GamepadIcon />}
-            variant={location.pathname.startsWith('/game') ? 'outlined' : 'text'}
+            variant={location.pathname === '/game' ? 'outlined' : 'text'}
             sx={{ 
               color: 'white',
-              borderColor: location.pathname.startsWith('/game') ? 'white' : 'transparent'
+              borderColor: location.pathname === '/game' ? 'white' : 'transparent'
             }}
           >
             AI Game
+          </Button>
+          <Button 
+            color="inherit" 
+            component={Link} 
+            to="/llc-game"
+            startIcon={<BusinessIcon />}
+            variant={location.pathname === '/llc-game' ? 'outlined' : 'text'}
+            sx={{ 
+              color: 'white',
+              borderColor: location.pathname === '/llc-game' ? 'white' : 'transparent'
+            }}
+          >
+            LLC Game
           </Button>
         </Box>
       </Toolbar>
@@ -63,6 +78,7 @@ function App() {
         <Routes>
           <Route path="/" element={<PollApp />} />
           <Route path="/game" element={<Game />} />
+          <Route path="/llc-game" element={<LLCGame />} />
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </Box>
