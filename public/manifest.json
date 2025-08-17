@@ -4,19 +4,27 @@
   "description": "AI consultant application and interactive AI knowledge quiz game with progressive levels",
   "icons": [
     {
-      "src": "favicon.ico",
+      "src": "favicon.png",
       "sizes": "64x64 32x32 24x24 16x16",
-      "type": "image/x-icon"
+      "type": "image/png"
     },
     {
-      "src": "logo192.png",
+      "src": "icon-192x192.png",
       "type": "image/png",
-      "sizes": "192x192"
+      "sizes": "192x192",
+      "purpose": "any"
     },
     {
-      "src": "logo512.png",
+      "src": "icon-192x192.png",
       "type": "image/png",
-      "sizes": "512x512"
+      "sizes": "192x192",
+      "purpose": "maskable"
+    },
+    {
+      "src": "icon-512x512.png",
+      "type": "image/png",
+      "sizes": "512x512",
+      "purpose": "any"
     }
   ],
   "start_url": ".",
@@ -50,7 +58,7 @@
       "url": "/",
       "icons": [
         {
-          "src": "logo192.png",
+          "src": "icon-192x192.png",
           "sizes": "192x192"
         }
       ]
@@ -62,7 +70,7 @@
       "url": "/game",
       "icons": [
         {
-          "src": "logo192.png",
+          "src": "icon-192x192.png",
           "sizes": "192x192"
         }
       ]
