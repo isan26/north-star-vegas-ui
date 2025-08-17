@@ -13,9 +13,6 @@ class PWAManager {
     // Check if app is already installed
     this.checkInstallStatus();
     
-    // Register service worker
-    this.registerServiceWorker();
-    
     // Setup install prompt handling
     this.setupInstallPrompt();
     
@@ -34,41 +31,6 @@ class PWAManager {
     if (document.referrer.includes('android-app://')) {
       this.isInstalled = true;
       console.log('App is running as TWA (installed)');
-    }
-  }
-
-  async registerServiceWorker() {
-    if ('serviceWorker' in navigator) {
-      try {
-        const registration = await navigator.serviceWorker.register('/sw.js', {
-          scope: '/'
-        });
-        
-        console.log('Service Worker registered successfully:', registration);
-        
-        // Handle service worker updates
-        registration.addEventListener('updatefound', () => {
-          const newWorker = registration.installing;
-          console.log('New service worker found, installing...');
-          
-          newWorker.addEventListener('statechange', () => {
-            if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
-              console.log('New service worker installed, app will update on next visit');
-              this.showUpdateNotification();
-            }
-          });
-        });
-        
-        // Listen for service worker messages
-        navigator.serviceWorker.addEventListener('message', (event) => {
-          console.log('Message from service worker:', event.data);
-        });
-        
-      } catch (error) {
-        console.error('Service Worker registration failed:', error);
-      }
-    } else {
-      console.log('Service Workers not supported');
     }
   }
 
@@ -157,7 +119,7 @@ class PWAManager {
   }
 
   showUpdateNotification() {
-    // Create a simple update notification
+    // Create a simple update notification without auto-refresh
     const notification = document.createElement('div');
     notification.innerHTML = `
       <div style="
@@ -172,24 +134,25 @@ class PWAManager {
         box-shadow: 0 4px 12px rgba(0,0,0,0.2);
         z-index: 1001;
         font-weight: 600;
-        cursor: pointer;
+        pointer-events: none;
       ">
-        🔄 Update available! Tap to refresh
+        🔄 Update available! Refresh manually to see changes.
       </div>
     `;
     
     document.body.appendChild(notification);
     
-    notification.addEventListener('click', () => {
-      window.location.reload();
-    });
+    // Remove the click listener - no automatic refresh
+    // notification.addEventListener('click', () => {
+    //   window.location.reload();
+    // });
     
-    // Auto-remove after 5 seconds
+    // Auto-remove after 3 seconds
     setTimeout(() => {
       if (document.body.contains(notification)) {
         document.body.removeChild(notification);
       }
-    }, 5000);
+    }, 3000);
   }
 
   showInstallationSuccess() {

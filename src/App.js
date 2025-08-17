@@ -2,10 +2,9 @@ import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { Box, AppBar, Toolbar, Typography, Button } from '@mui/material';
 import { Link, useLocation } from 'react-router-dom';
-import PollApp from './PollApp';
 import Game from './game/Game';
 import LLCGame from './game/LLCGame';
-import OfflineIndicator from './components/OfflineIndicator';
+import PollApp from './PollApp'; // Add this import
 import HomeIcon from '@mui/icons-material/Home';
 import GamepadIcon from '@mui/icons-material/Gamepad';
 import BusinessIcon from '@mui/icons-material/Business';
@@ -48,20 +47,20 @@ const Navigation = () => {
               borderColor: location.pathname === '/game' ? 'white' : 'transparent'
             }}
           >
-            AI Game
+            AI Quiz
           </Button>
           <Button 
             color="inherit" 
             component={Link} 
-            to="/llc-game"
+            to="/llc-quiz"
             startIcon={<BusinessIcon />}
-            variant={location.pathname === '/llc-game' ? 'outlined' : 'text'}
+            variant={location.pathname === '/llc-quiz' ? 'outlined' : 'text'}
             sx={{ 
               color: 'white',
-              borderColor: location.pathname === '/llc-game' ? 'white' : 'transparent'
+              borderColor: location.pathname === '/llc-quiz' ? 'white' : 'transparent'
             }}
           >
-            LLC Game
+            LLC Quiz
           </Button>
         </Box>
       </Toolbar>
@@ -74,11 +73,10 @@ function App() {
     <Router>
       <Box sx={{ minHeight: '100vh', backgroundColor: '#f5f5f5' }}>
         <Navigation />
-        <OfflineIndicator />
         <Routes>
           <Route path="/" element={<PollApp />} />
           <Route path="/game" element={<Game />} />
-          <Route path="/llc-game" element={<LLCGame />} />
+          <Route path="/llc-quiz" element={<LLCGame />} />
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </Box>

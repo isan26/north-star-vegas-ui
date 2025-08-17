@@ -31,6 +31,8 @@ const OfflineIndicator = () => {
     setShowNotification(false);
   };
 
+  if (isOnline) return null;
+
   return (
     <Snackbar
       open={showNotification}

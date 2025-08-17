@@ -1,8 +1,8 @@
-const CACHE_NAME = 'north-star-vegas-v2';
+const CACHE_NAME = 'north-star-vegas-v12'; // Auto-incremented by script
 const urlsToCache = [
   '/',
   '/game',
-  '/llc-game',
+  '/llc-quiz', // Changed from '/llc-game'
   '/static/js/bundle.js',
   '/static/css/main.css',
   '/manifest.json',
@@ -27,7 +27,7 @@ self.addEventListener('install', (event) => {
         console.error('Failed to cache resources:', error);
       })
   );
-  // Force the waiting service worker to become the active service worker
+  // Re-enable for easier development
   self.skipWaiting();
 });
 
@@ -46,7 +46,7 @@ self.addEventListener('activate', (event) => {
       );
     })
   );
-  // Take control of all pages immediately
+  // Re-enable for easier development
   self.clients.claim();
 });
 
@@ -132,9 +132,9 @@ self.addEventListener('sync', (event) => {
     );
   }
   
-  if (event.tag === 'background-sync-llc-game-progress') {
+  if (event.tag === 'background-sync-llc-quiz-progress') { // Changed from llc-game
     event.waitUntil(
-      syncGameProgress('llcGameProgress')
+      syncGameProgress('llcQuizProgress') // Changed from llcGameProgress
     );
   }
   
@@ -403,7 +403,7 @@ self.addEventListener('periodicsync', (event) => {
     event.waitUntil(
       Promise.all([
         syncGameProgress('aiGameProgress'),
-        syncGameProgress('llcGameProgress'),
+        syncGameProgress('llcQuizProgress'), // Changed from llcGameProgress
         syncPollData()
       ])
     );
