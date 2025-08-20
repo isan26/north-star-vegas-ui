@@ -15,12 +15,25 @@ import { motion, AnimatePresence } from 'framer-motion';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import CheckIcon from '@mui/icons-material/Check';
+import { useUser } from '../../context/UserContext';
 
 const GameLevel = ({ level, gameData, onComplete, onBack, storageKey = 'aiGameProgress' }) => {
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [selectedAnswers, setSelectedAnswers] = useState({});
   const [showResults, setShowResults] = useState(false);
   const [score, setScore] = useState(0);
+  const { updateHighScore } = useUser();
+
+  // Map storage keys to high score types
+  const getHighScoreType = (storageKey) => {
+    const scoreMap = {
+      'aiGameProgress': 'aiQuizHighScore',
+      'llcGameProgress': 'llcQuizHighScore',
+      'delawareGameProgress': 'delawareQuizHighScore',
+      'nonprofitGameProgress': 'nonprofitQuizHighScore'
+    };
+    return scoreMap[storageKey] || 'aiQuizHighScore';
+  };
 
   const questions = gameData.questions;
   const progress = ((currentQuestion + 1) / questions.length) * 100;
@@ -50,6 +63,9 @@ const GameLevel = ({ level, gameData, onComplete, onBack, storageKey = 'aiGamePr
       
       // Save progress with dynamic storage key
       const percentage = saveGameProgressWithKey(storageKey, level, correctAnswers, questions.length);
+      
+      // Update high score in user context with correct game type
+      updateHighScore(getHighScoreType(storageKey), correctAnswers);
       
       // Call onComplete with results
       setTimeout(() => {

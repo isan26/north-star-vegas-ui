@@ -5,12 +5,14 @@ import LLCGameMenu from './components/LLCGameMenu';
 import GameLevel from './components/GameLevel';
 import GameResults from './components/GameResults';
 import { llcGameData, getLLCUnlockedLevels } from './data/llcGameData';
+import { useUser } from '../context/UserContext';
 
 const LLCGame = () => {
   const [currentView, setCurrentView] = useState('menu'); // 'menu', 'playing', 'results'
   const [selectedLevel, setSelectedLevel] = useState(null);
   const [gameResults, setGameResults] = useState(null);
   const [unlockedLevels, setUnlockedLevels] = useState([1]);
+  const { updateHighScore } = useUser();
 
   useEffect(() => {
     setUnlockedLevels(getLLCUnlockedLevels());
@@ -28,6 +30,9 @@ const LLCGame = () => {
     setTimeout(() => {
       setUnlockedLevels(getLLCUnlockedLevels());
     }, 1000);
+
+    // Update high score
+    updateHighScore('llcQuizHighScore', results.finalScore);
   };
 
   const handleBackToMenu = () => {

@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { Container } from '@mui/material';
 import { motion, AnimatePresence } from 'framer-motion';
-import GameMenu from './components/GameMenu';
+import DelawareGameMenu from './components/DelawareGameMenu';
 import GameLevel from './components/GameLevel';
 import GameResults from './components/GameResults';
-import { gameData, getUnlockedLevels } from './data/gameData';
+import { delawareGameData, getDelawareUnlockedLevels } from './data/delawareGameData';
 import { useUser } from '../context/UserContext';
 
-const Game = () => {
+const DelawareGame = () => {
   const [currentView, setCurrentView] = useState('menu'); // 'menu', 'playing', 'results'
   const [selectedLevel, setSelectedLevel] = useState(null);
   const [gameResults, setGameResults] = useState(null);
@@ -15,7 +15,7 @@ const Game = () => {
   const { updateHighScore } = useUser();
 
   useEffect(() => {
-    setUnlockedLevels(getUnlockedLevels());
+    setUnlockedLevels(getDelawareUnlockedLevels());
   }, []);
 
   const handleLevelSelect = (level) => {
@@ -28,11 +28,11 @@ const Game = () => {
     setCurrentView('results');
     // Refresh unlocked levels after completing a game
     setTimeout(() => {
-      setUnlockedLevels(getUnlockedLevels());
+      setUnlockedLevels(getDelawareUnlockedLevels());
     }, 1000);
 
     // Update high score
-    updateHighScore('aiQuizHighScore', results.score);
+    updateHighScore('delawareQuizHighScore', results.score);
   };
 
   const handleBackToMenu = () => {
@@ -47,24 +47,24 @@ const Game = () => {
         return (
           <GameLevel
             level={selectedLevel}
-            gameData={gameData[selectedLevel]}
+            gameData={delawareGameData[selectedLevel]}
             onComplete={handleGameComplete}
             onBack={handleBackToMenu}
-            storageKey="aiGameProgress"
+            storageKey="delawareGameProgress"
           />
         );
       case 'results':
         return (
           <GameResults
             results={gameResults}
-            levelData={gameData[selectedLevel]}
+            levelData={delawareGameData[selectedLevel]}
             onBackToMenu={handleBackToMenu}
             onRetryLevel={() => setCurrentView('playing')}
           />
         );
       default:
         return (
-          <GameMenu
+          <DelawareGameMenu
             unlockedLevels={unlockedLevels}
             onLevelSelect={handleLevelSelect}
           />
@@ -89,4 +89,4 @@ const Game = () => {
   );
 };
 
-export default Game;
+export default DelawareGame;

@@ -4,10 +4,15 @@ import { Box, AppBar, Toolbar, Typography, Button } from '@mui/material';
 import { Link, useLocation } from 'react-router-dom';
 import Game from './game/Game';
 import LLCGame from './game/LLCGame';
-import PollApp from './PollApp'; // Add this import
+import DelawareGame from './game/DelawareGame';
+import NonprofitGame from './game/NonprofitGame';
+import PollApp from './PollApp';
+import { UserProvider, useUser } from './context/UserContext';
 import HomeIcon from '@mui/icons-material/Home';
 import GamepadIcon from '@mui/icons-material/Gamepad';
 import BusinessIcon from '@mui/icons-material/Business';
+import AccountBalanceIcon from '@mui/icons-material/AccountBalance';
+import VolunteerActivismIcon from '@mui/icons-material/VolunteerActivism';
 
 const Navigation = () => {
   const location = useLocation();
@@ -60,7 +65,33 @@ const Navigation = () => {
               borderColor: location.pathname === '/llc-quiz' ? 'white' : 'transparent'
             }}
           >
-            LLC Quiz
+            NV LLC QUIZ
+          </Button>
+          <Button 
+            color="inherit" 
+            component={Link} 
+            to="/delaware-quiz"
+            startIcon={<AccountBalanceIcon />}
+            variant={location.pathname === '/delaware-quiz' ? 'outlined' : 'text'}
+            sx={{ 
+              color: 'white',
+              borderColor: location.pathname === '/delaware-quiz' ? 'white' : 'transparent'
+            }}
+          >
+            DE + NV LLC Quiz
+          </Button>
+          <Button 
+            color="inherit" 
+            component={Link} 
+            to="/nonprofit-quiz"
+            startIcon={<VolunteerActivismIcon />}
+            variant={location.pathname === '/nonprofit-quiz' ? 'outlined' : 'text'}
+            sx={{ 
+              color: 'white',
+              borderColor: location.pathname === '/nonprofit-quiz' ? 'white' : 'transparent'
+            }}
+          >
+            Nonprofit
           </Button>
         </Box>
       </Toolbar>
@@ -70,17 +101,21 @@ const Navigation = () => {
 
 function App() {
   return (
-    <Router>
-      <Box sx={{ minHeight: '100vh', backgroundColor: '#f5f5f5' }}>
-        <Navigation />
-        <Routes>
-          <Route path="/" element={<PollApp />} />
-          <Route path="/game" element={<Game />} />
-          <Route path="/llc-quiz" element={<LLCGame />} />
-          <Route path="*" element={<Navigate to="/" replace />} />
-        </Routes>
-      </Box>
-    </Router>
+    <UserProvider>
+      <Router>
+        <Box sx={{ minHeight: '100vh', backgroundColor: '#f5f5f5' }}>
+          <Navigation />
+          <Routes>
+            <Route path="/" element={<PollApp />} />
+            <Route path="/game" element={<Game />} />
+            <Route path="/llc-quiz" element={<LLCGame />} />
+            <Route path="/delaware-quiz" element={<DelawareGame />} />
+            <Route path="/nonprofit-quiz" element={<NonprofitGame />} />
+            <Route path="*" element={<Navigate to="/" replace />} />
+          </Routes>
+        </Box>
+      </Router>
+    </UserProvider>
   );
 }
 

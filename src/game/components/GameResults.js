@@ -23,30 +23,19 @@ const GameResults = ({ results, levelData, onBackToMenu, onRetryLevel }) => {
     height: window.innerHeight,
   });
 
-  // Load progress from localStorage
-  useEffect(() => {
-    const savedProgress = localStorage.getItem('gameProgress');
-    if (savedProgress) {
-      const parsedProgress = JSON.parse(savedProgress);
-      if (parsedProgress.levelId === levelData.id) {
-        // Restore progress if it matches the current level
-        results.score = parsedProgress.score;
-        results.percentage = parsedProgress.percentage;
-        results.passed = parsedProgress.passed;
-      }
-    }
-  }, [levelData.id, results]);
+  // REMOVE localStorage effects that might cause refresh loops
+  // Comment out these useEffect hooks:
+  
+  // useEffect(() => {
+  //   const savedProgress = localStorage.getItem('gameProgress');
+  //   // ... remove this entire useEffect
+  // }, [levelData.id, results]);
 
-  // Save progress to localStorage
-  useEffect(() => {
-    const progress = {
-      levelId: levelData.id,
-      score: results.score,
-      percentage: results.percentage,
-      passed: results.passed,
-    };
-    localStorage.setItem('gameProgress', JSON.stringify(progress));
-  }, [levelData.id, results]);
+  // useEffect(() => {
+  //   const progress = {
+  //     // ... remove this entire useEffect
+  //   };
+  // }, [levelData.id, results]);
 
   useEffect(() => {
     const handleResize = () => {
