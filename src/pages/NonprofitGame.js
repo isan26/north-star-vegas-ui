@@ -1,21 +1,19 @@
 import React, { useState, useEffect } from 'react';
 import { Container } from '@mui/material';
 import { motion, AnimatePresence } from 'framer-motion';
-import GameMenu from './components/GameMenu';
-import GameLevel from './components/GameLevel';
-import GameResults from './components/GameResults';
-import { gameData, getUnlockedLevels } from './data/gameData';
-import { useUser } from '../context/UserContext';
+import NonprofitGameMenu from '../components/games/GamePages/NonprofitGameMenu';
+import GameLevel from '../components/games/GameLevel';
+import GameResults from '../components/games/GameResults';
+import { nonprofitGameData, getNonprofitUnlockedLevels } from '../components/games/data/nonprofitGameData';
 
-const Game = () => {
+const NonprofitGame = () => {
   const [currentView, setCurrentView] = useState('menu'); // 'menu', 'playing', 'results'
   const [selectedLevel, setSelectedLevel] = useState(null);
   const [gameResults, setGameResults] = useState(null);
   const [unlockedLevels, setUnlockedLevels] = useState([1]);
-  const { updateHighScore } = useUser();
 
   useEffect(() => {
-    setUnlockedLevels(getUnlockedLevels());
+    setUnlockedLevels(getNonprofitUnlockedLevels());
   }, []);
 
   const handleLevelSelect = (level) => {
@@ -28,11 +26,8 @@ const Game = () => {
     setCurrentView('results');
     // Refresh unlocked levels after completing a game
     setTimeout(() => {
-      setUnlockedLevels(getUnlockedLevels());
+      setUnlockedLevels(getNonprofitUnlockedLevels());
     }, 1000);
-
-    // Update high score
-    updateHighScore('aiQuizHighScore', results.score);
   };
 
   const handleBackToMenu = () => {
@@ -47,24 +42,24 @@ const Game = () => {
         return (
           <GameLevel
             level={selectedLevel}
-            gameData={gameData[selectedLevel]}
+            gameData={nonprofitGameData[selectedLevel]}
             onComplete={handleGameComplete}
             onBack={handleBackToMenu}
-            storageKey="aiGameProgress"
+            storageKey="nonprofitGameProgress"
           />
         );
       case 'results':
         return (
           <GameResults
             results={gameResults}
-            levelData={gameData[selectedLevel]}
+            levelData={nonprofitGameData[selectedLevel]}
             onBackToMenu={handleBackToMenu}
             onRetryLevel={() => setCurrentView('playing')}
           />
         );
       default:
         return (
-          <GameMenu
+          <NonprofitGameMenu
             unlockedLevels={unlockedLevels}
             onLevelSelect={handleLevelSelect}
           />
@@ -89,4 +84,4 @@ const Game = () => {
   );
 };
 
-export default Game;
+export default NonprofitGame;

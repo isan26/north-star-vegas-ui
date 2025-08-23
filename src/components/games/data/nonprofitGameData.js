@@ -472,12 +472,11 @@ export const getNonprofitUnlockedLevels = () => {
   const parsedProgress = JSON.parse(progress);
   const unlockedLevels = [1];
   
-  // Each level unlocks if previous level passed with 80%+
   for (let i = 1; i < 8; i++) {
     if (parsedProgress[i] && parsedProgress[i].percentage >= 80) {
       unlockedLevels.push(i + 1);
     } else {
-      break; // Stop if any level hasn't been passed
+      break;
     }
   }
   

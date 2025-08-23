@@ -1,21 +1,19 @@
 import React, { useState, useEffect } from 'react';
 import { Container } from '@mui/material';
 import { motion, AnimatePresence } from 'framer-motion';
-import LLCGameMenu from './components/LLCGameMenu';
-import GameLevel from './components/GameLevel';
-import GameResults from './components/GameResults';
-import { llcGameData, getLLCUnlockedLevels } from './data/llcGameData';
-import { useUser } from '../context/UserContext';
+import GameMenu from '../components/games/GamePages/GameMenu';
+import GameLevel from '../components/games/GameLevel';
+import GameResults from '../components/games/GameResults';
+import { gameData, getUnlockedLevels } from '../components/games/data/gameData';
 
-const LLCGame = () => {
+const Game = () => {
   const [currentView, setCurrentView] = useState('menu'); // 'menu', 'playing', 'results'
   const [selectedLevel, setSelectedLevel] = useState(null);
   const [gameResults, setGameResults] = useState(null);
   const [unlockedLevels, setUnlockedLevels] = useState([1]);
-  const { updateHighScore } = useUser();
 
   useEffect(() => {
-    setUnlockedLevels(getLLCUnlockedLevels());
+    setUnlockedLevels(getUnlockedLevels());
   }, []);
 
   const handleLevelSelect = (level) => {
@@ -28,11 +26,8 @@ const LLCGame = () => {
     setCurrentView('results');
     // Refresh unlocked levels after completing a game
     setTimeout(() => {
-      setUnlockedLevels(getLLCUnlockedLevels());
+      setUnlockedLevels(getUnlockedLevels());
     }, 1000);
-
-    // Update high score
-    updateHighScore('llcQuizHighScore', results.finalScore);
   };
 
   const handleBackToMenu = () => {
@@ -47,24 +42,24 @@ const LLCGame = () => {
         return (
           <GameLevel
             level={selectedLevel}
-            gameData={llcGameData[selectedLevel]}
+            gameData={gameData[selectedLevel]}
             onComplete={handleGameComplete}
             onBack={handleBackToMenu}
-            storageKey="llcGameProgress"
+            storageKey="aiGameProgress"
           />
         );
       case 'results':
         return (
           <GameResults
             results={gameResults}
-            levelData={llcGameData[selectedLevel]}
+            levelData={gameData[selectedLevel]}
             onBackToMenu={handleBackToMenu}
             onRetryLevel={() => setCurrentView('playing')}
           />
         );
       default:
         return (
-          <LLCGameMenu
+          <GameMenu
             unlockedLevels={unlockedLevels}
             onLevelSelect={handleLevelSelect}
           />
@@ -89,4 +84,4 @@ const LLCGame = () => {
   );
 };
 
-export default LLCGame;
+export default Game;

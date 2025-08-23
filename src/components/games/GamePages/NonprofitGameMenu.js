@@ -13,11 +13,11 @@ import { motion } from 'framer-motion';
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import LockIcon from '@mui/icons-material/Lock';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
-import { delawareGameData } from '../data/delawareGameData';
+import { nonprofitGameData } from '../data/nonprofitGameData';
 
-const DelawareGameMenu = ({ unlockedLevels, onLevelSelect }) => {
+const NonprofitGameMenu = ({ unlockedLevels, onLevelSelect }) => {
   const getProgressData = () => {
-    const progress = localStorage.getItem('delawareGameProgress');
+    const progress = localStorage.getItem('nonprofitGameProgress');
     return progress ? JSON.parse(progress) : {};
   };
 
@@ -48,7 +48,7 @@ const DelawareGameMenu = ({ unlockedLevels, onLevelSelect }) => {
           fontWeight: 800,
           fontSize: { xs: '2.5rem', md: '3.5rem' }
         }}>
-          Delaware LLC + Nevada Foreign Quiz 🏛️
+          501(c)(3) Nonprofit Formation Quiz 🏛️
         </Typography>
         
         <Typography variant="h5" sx={{ 
@@ -57,7 +57,7 @@ const DelawareGameMenu = ({ unlockedLevels, onLevelSelect }) => {
           maxWidth: 700,
           mx: 'auto'
         }}>
-          Master the process of forming a Delaware LLC and registering it as a foreign LLC in Nevada!
+          Master the complete process of forming a 501(c)(3) nonprofit organization from planning to IRS approval!
           <br />
           <Typography variant="body1" sx={{ mt: 1, fontStyle: 'italic' }}>
             Score 80%+ to unlock the next level! 🚀
@@ -67,7 +67,7 @@ const DelawareGameMenu = ({ unlockedLevels, onLevelSelect }) => {
 
       {/* Level Cards */}
       <Grid container spacing={3} sx={{ mb: 4 }}>
-        {Object.entries(delawareGameData).map(([level, data], index) => {
+        {Object.entries(nonprofitGameData).map(([level, data], index) => {
           const levelNum = parseInt(level);
           const { isUnlocked, isCompleted, percentage } = getLevelStatus(levelNum);
           
@@ -203,14 +203,14 @@ const DelawareGameMenu = ({ unlockedLevels, onLevelSelect }) => {
         }}>
           <CardContent sx={{ p: 3 }}>
             <Typography variant="h6" sx={{ mb: 2, color: '#1b5e20', fontWeight: 600 }}>
-              🎯 Delaware + Nevada Structure
+              🎯 501(c)(3) Formation Process
             </Typography>
             <Typography variant="body1" sx={{ color: 'text.secondary', lineHeight: 1.6 }}>
-              • <strong>More expensive</strong> but investor-friendly structure<br />
-              • <strong>Year 1:</strong> ~$1,085-$1,385 total cost<br />
-              • <strong>Ongoing:</strong> ~$650-$850/year plus agent fees<br />
-              • <strong>Best for:</strong> Businesses raising outside funding<br />
-              • <strong>Alternative:</strong> Simple Nevada LLC if not raising funds
+              • <strong>Planning:</strong> Mission alignment with IRS charitable purposes<br />
+              • <strong>Incorporation:</strong> Nevada Articles with required IRS language<br />
+              • <strong>IRS Filing:</strong> Form 1023-EZ (streamlined) vs. Full 1023<br />
+              • <strong>Governance:</strong> Bylaws, board structure, and organization<br />
+              • <strong>Grants:</strong> Preparation for funding opportunities
             </Typography>
           </CardContent>
         </Card>
@@ -219,4 +219,4 @@ const DelawareGameMenu = ({ unlockedLevels, onLevelSelect }) => {
   );
 };
 
-export default DelawareGameMenu;
+export default NonprofitGameMenu;

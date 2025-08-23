@@ -1,21 +1,20 @@
+// src/pages/LLCGame.js
 import React, { useState, useEffect } from 'react';
 import { Container } from '@mui/material';
 import { motion, AnimatePresence } from 'framer-motion';
-import NonprofitGameMenu from './components/NonprofitGameMenu';
-import GameLevel from './components/GameLevel';
-import GameResults from './components/GameResults';
-import { nonprofitGameData, getNonprofitUnlockedLevels } from './data/nonprofitGameData';
-import { useUser } from '../context/UserContext';
+import LLCGameMenu from '../components/games/GamePages/LLCGameMenu';
+import GameLevel from '../components/games/GameLevel';
+import GameResults from '../components/games/GameResults';
+import { llcGameData, getLLCUnlockedLevels } from '../components/games/data/llcGameData';
 
-const NonprofitGame = () => {
+const LLCGame = () => {
   const [currentView, setCurrentView] = useState('menu'); // 'menu', 'playing', 'results'
   const [selectedLevel, setSelectedLevel] = useState(null);
   const [gameResults, setGameResults] = useState(null);
   const [unlockedLevels, setUnlockedLevels] = useState([1]);
-  const { updateHighScore } = useUser();
 
   useEffect(() => {
-    setUnlockedLevels(getNonprofitUnlockedLevels());
+    setUnlockedLevels(getLLCUnlockedLevels());
   }, []);
 
   const handleLevelSelect = (level) => {
@@ -28,11 +27,8 @@ const NonprofitGame = () => {
     setCurrentView('results');
     // Refresh unlocked levels after completing a game
     setTimeout(() => {
-      setUnlockedLevels(getNonprofitUnlockedLevels());
+      setUnlockedLevels(getLLCUnlockedLevels());
     }, 1000);
-
-    // Update high score
-    updateHighScore('nonprofitQuizHighScore', results.score);
   };
 
   const handleBackToMenu = () => {
@@ -47,24 +43,24 @@ const NonprofitGame = () => {
         return (
           <GameLevel
             level={selectedLevel}
-            gameData={nonprofitGameData[selectedLevel]}
+            gameData={llcGameData[selectedLevel]}
             onComplete={handleGameComplete}
             onBack={handleBackToMenu}
-            storageKey="nonprofitGameProgress"
+            storageKey="llcGameProgress"
           />
         );
       case 'results':
         return (
           <GameResults
             results={gameResults}
-            levelData={nonprofitGameData[selectedLevel]}
+            levelData={llcGameData[selectedLevel]}
             onBackToMenu={handleBackToMenu}
             onRetryLevel={() => setCurrentView('playing')}
           />
         );
       default:
         return (
-          <NonprofitGameMenu
+          <LLCGameMenu
             unlockedLevels={unlockedLevels}
             onLevelSelect={handleLevelSelect}
           />
@@ -89,4 +85,4 @@ const NonprofitGame = () => {
   );
 };
 
-export default NonprofitGame;
+export default LLCGame;

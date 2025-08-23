@@ -2,12 +2,11 @@ import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { Box, AppBar, Toolbar, Typography, Button } from '@mui/material';
 import { Link, useLocation } from 'react-router-dom';
-import Game from './game/Game';
-import LLCGame from './game/LLCGame';
-import DelawareGame from './game/DelawareGame';
-import NonprofitGame from './game/NonprofitGame';
-import PollApp from './PollApp';
-import { UserProvider, useUser } from './context/UserContext';
+import PollApp from './pages/PollApp';
+import Game from './pages/Game';
+import LLCGame from './pages/LLCGame';
+import DelawareGame from './pages/DelawareGame';
+import NonprofitGame from './pages/NonprofitGame';
 import HomeIcon from '@mui/icons-material/Home';
 import GamepadIcon from '@mui/icons-material/Gamepad';
 import BusinessIcon from '@mui/icons-material/Business';
@@ -101,21 +100,19 @@ const Navigation = () => {
 
 function App() {
   return (
-    <UserProvider>
-      <Router>
-        <Box sx={{ minHeight: '100vh', backgroundColor: '#f5f5f5' }}>
-          <Navigation />
-          <Routes>
-            <Route path="/" element={<PollApp />} />
-            <Route path="/game" element={<Game />} />
-            <Route path="/llc-quiz" element={<LLCGame />} />
-            <Route path="/delaware-quiz" element={<DelawareGame />} />
-            <Route path="/nonprofit-quiz" element={<NonprofitGame />} />
-            <Route path="*" element={<Navigate to="/" replace />} />
-          </Routes>
-        </Box>
-      </Router>
-    </UserProvider>
+    <Router>
+      <Box sx={{ minHeight: '100vh', backgroundColor: '#f5f5f5' }}>
+        <Navigation />
+        <Routes>
+          <Route path="/" element={<PollApp />} />
+          <Route path="/game" element={<Game />} />
+          <Route path="/llc-quiz" element={<LLCGame />} />
+          <Route path="/delaware-quiz" element={<DelawareGame />} />
+          <Route path="/nonprofit-quiz" element={<NonprofitGame />} />
+          <Route path="*" element={<Navigate to="/" replace />} />
+        </Routes>
+      </Box>
+    </Router>
   );
 }
 

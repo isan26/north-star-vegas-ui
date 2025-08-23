@@ -142,10 +142,7 @@ class PWAManager {
     
     document.body.appendChild(notification);
     
-    // Remove the click listener - no automatic refresh
-    // notification.addEventListener('click', () => {
-    //   window.location.reload();
-    // });
+
     
     // Auto-remove after 3 seconds
     setTimeout(() => {

@@ -23,20 +23,6 @@ const GameResults = ({ results, levelData, onBackToMenu, onRetryLevel }) => {
     height: window.innerHeight,
   });
 
-  // REMOVE localStorage effects that might cause refresh loops
-  // Comment out these useEffect hooks:
-  
-  // useEffect(() => {
-  //   const savedProgress = localStorage.getItem('gameProgress');
-  //   // ... remove this entire useEffect
-  // }, [levelData.id, results]);
-
-  // useEffect(() => {
-  //   const progress = {
-  //     // ... remove this entire useEffect
-  //   };
-  // }, [levelData.id, results]);
-
   useEffect(() => {
     const handleResize = () => {
       setWindowDimensions({

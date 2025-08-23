@@ -1,18 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import { Container } from '@mui/material';
 import { motion, AnimatePresence } from 'framer-motion';
-import DelawareGameMenu from './components/DelawareGameMenu';
-import GameLevel from './components/GameLevel';
-import GameResults from './components/GameResults';
-import { delawareGameData, getDelawareUnlockedLevels } from './data/delawareGameData';
-import { useUser } from '../context/UserContext';
+import DelawareGameMenu from '../components/games/GamePages/DelawareGameMenu';
+import GameLevel from '../components/games/GameLevel';
+import GameResults from '../components/games/GameResults';
+import { delawareGameData, getDelawareUnlockedLevels } from '../components/games/data/delawareGameData';
 
 const DelawareGame = () => {
   const [currentView, setCurrentView] = useState('menu'); // 'menu', 'playing', 'results'
   const [selectedLevel, setSelectedLevel] = useState(null);
   const [gameResults, setGameResults] = useState(null);
   const [unlockedLevels, setUnlockedLevels] = useState([1]);
-  const { updateHighScore } = useUser();
 
   useEffect(() => {
     setUnlockedLevels(getDelawareUnlockedLevels());
@@ -30,9 +28,6 @@ const DelawareGame = () => {
     setTimeout(() => {
       setUnlockedLevels(getDelawareUnlockedLevels());
     }, 1000);
-
-    // Update high score
-    updateHighScore('delawareQuizHighScore', results.score);
   };
 
   const handleBackToMenu = () => {

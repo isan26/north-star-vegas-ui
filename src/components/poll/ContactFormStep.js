@@ -16,7 +16,17 @@ import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import SendIcon from '@mui/icons-material/Send';
 import ContactPageIcon from '@mui/icons-material/ContactPage';
 
-const ContactFormStep = ({ userData, onNext, onPrevious, canGoBack }) => {
+const ContactFormStep = ({ pollData = {}, onNext, onBack, canGoBack }) => {
+  // Map pollData to userData for compatibility
+  const userData = {
+    name: pollData.contactInfo?.name || '',
+    email: pollData.contactInfo?.email || '',
+    phone: pollData.contactInfo?.phone || '',
+    interested: pollData.interests,
+    leveragesAi: pollData.aiLeverage,
+    confidenceLevel: pollData.confidenceRating
+  };
+
   const [formData, setFormData] = useState({
     name: userData.name || '',
     email: userData.email || '',
@@ -101,12 +111,11 @@ const ContactFormStep = ({ userData, onNext, onPrevious, canGoBack }) => {
 
       // Save to Firebase
       const docRef = await addDoc(collection(db, 'ai-consultant-applications'), completeUserData);
-
-      console.log('Document written with ID: ', docRef.id);
       
-      // Pass data to next step
-      onNext({
-        ...formData,
+      
+      // Pass data to next step using PollApp's expected format
+      onNext({ 
+        contactInfo: formData,
         submissionId: completeUserData.submissionId,
         firebaseId: docRef.id
       });
@@ -244,7 +253,7 @@ const ContactFormStep = ({ userData, onNext, onPrevious, canGoBack }) => {
                 <Button
                   variant="outlined"
                   startIcon={<ArrowBackIcon />}
-                  onClick={onPrevious}
+                  onClick={onBack}
                   disabled={!canGoBack || loading}
                   sx={{ px: 3 }}
                 >

@@ -13,11 +13,11 @@ import { motion } from 'framer-motion';
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import LockIcon from '@mui/icons-material/Lock';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
-import { nonprofitGameData } from '../data/nonprofitGameData';
+import { delawareGameData } from '../data/delawareGameData';
 
-const NonprofitGameMenu = ({ unlockedLevels, onLevelSelect }) => {
+const DelawareGameMenu = ({ unlockedLevels, onLevelSelect }) => {
   const getProgressData = () => {
-    const progress = localStorage.getItem('nonprofitGameProgress');
+    const progress = localStorage.getItem('delawareGameProgress');
     return progress ? JSON.parse(progress) : {};
   };
 
@@ -41,14 +41,14 @@ const NonprofitGameMenu = ({ unlockedLevels, onLevelSelect }) => {
       >
         <Typography variant="h1" sx={{ 
           mb: 2,
-          background: 'linear-gradient(135deg, #2E8B57 0%, #4169E1 100%)',
+          background: 'linear-gradient(135deg, #2E8B57 0%, #DC143C 100%)',
           backgroundClip: 'text',
           WebkitBackgroundClip: 'text',
           color: 'transparent',
           fontWeight: 800,
           fontSize: { xs: '2.5rem', md: '3.5rem' }
         }}>
-          501(c)(3) Nonprofit Formation Quiz 🏛️
+          Delaware + Nevada LLC Quiz 🏛️
         </Typography>
         
         <Typography variant="h5" sx={{ 
@@ -57,7 +57,7 @@ const NonprofitGameMenu = ({ unlockedLevels, onLevelSelect }) => {
           maxWidth: 700,
           mx: 'auto'
         }}>
-          Master the complete process of forming a 501(c)(3) nonprofit organization from planning to IRS approval!
+          Master the dual-state LLC formation process: Delaware formation + Nevada foreign registration!
           <br />
           <Typography variant="body1" sx={{ mt: 1, fontStyle: 'italic' }}>
             Score 80%+ to unlock the next level! 🚀
@@ -67,7 +67,7 @@ const NonprofitGameMenu = ({ unlockedLevels, onLevelSelect }) => {
 
       {/* Level Cards */}
       <Grid container spacing={3} sx={{ mb: 4 }}>
-        {Object.entries(nonprofitGameData).map(([level, data], index) => {
+        {Object.entries(delawareGameData).map(([level, data], index) => {
           const levelNum = parseInt(level);
           const { isUnlocked, isCompleted, percentage } = getLevelStatus(levelNum);
           
@@ -198,19 +198,19 @@ const NonprofitGameMenu = ({ unlockedLevels, onLevelSelect }) => {
         <Card sx={{
           maxWidth: 700,
           mx: 'auto',
-          background: 'linear-gradient(135deg, #e8f5e8 0%, #c8e6c9 100%)',
+          background: 'linear-gradient(135deg, #e8f5e8 0%, #ffebee 100%)',
           border: '2px solid #2E8B57'
         }}>
           <CardContent sx={{ p: 3 }}>
             <Typography variant="h6" sx={{ mb: 2, color: '#1b5e20', fontWeight: 600 }}>
-              🎯 501(c)(3) Formation Process
+              🎯 Delaware + Nevada LLC Formation Process
             </Typography>
             <Typography variant="body1" sx={{ color: 'text.secondary', lineHeight: 1.6 }}>
-              • <strong>Planning:</strong> Mission alignment with IRS charitable purposes<br />
-              • <strong>Incorporation:</strong> Nevada Articles with required IRS language<br />
-              • <strong>IRS Filing:</strong> Form 1023-EZ (streamlined) vs. Full 1023<br />
-              • <strong>Governance:</strong> Bylaws, board structure, and organization<br />
-              • <strong>Grants:</strong> Preparation for funding opportunities
+              • <strong>Delaware Formation:</strong> Certificate of Formation + EIN<br />
+              • <strong>Nevada Registration:</strong> Foreign LLC registration + Initial List<br />
+              • <strong>Dual Compliance:</strong> Annual requirements in both states<br />
+              • <strong>Cost Analysis:</strong> Compare costs vs. benefits<br />
+              • <strong>Strategic Choice:</strong> When this structure makes sense
             </Typography>
           </CardContent>
         </Card>
@@ -219,4 +219,4 @@ const NonprofitGameMenu = ({ unlockedLevels, onLevelSelect }) => {
   );
 };
 
-export default NonprofitGameMenu;
+export default DelawareGameMenu;

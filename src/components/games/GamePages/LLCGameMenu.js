@@ -41,14 +41,14 @@ const LLCGameMenu = ({ unlockedLevels, onLevelSelect }) => {
       >
         <Typography variant="h1" sx={{ 
           mb: 2,
-          background: 'linear-gradient(135deg, #58cc02 0%, #ff4081 100%)',
+          background: 'linear-gradient(135deg, #FF9800 0%, #F57C00 100%)',
           backgroundClip: 'text',
           WebkitBackgroundClip: 'text',
           color: 'transparent',
           fontWeight: 800,
           fontSize: { xs: '2.5rem', md: '3.5rem' }
         }}>
-          🏢 Nevada LLC Formation Quest
+          Nevada LLC Formation Quiz 🏢
         </Typography>
         
         <Typography variant="h5" sx={{ 
@@ -60,7 +60,7 @@ const LLCGameMenu = ({ unlockedLevels, onLevelSelect }) => {
           Master the complete process of forming an LLC in Nevada!
           <br />
           <Typography variant="body1" sx={{ mt: 1, fontStyle: 'italic' }}>
-            Learn all 9 essential steps from name selection to annual compliance! 🚀
+            Score 80%+ to unlock the next level! 🚀
           </Typography>
         </Typography>
       </motion.div>
@@ -72,7 +72,7 @@ const LLCGameMenu = ({ unlockedLevels, onLevelSelect }) => {
           const { isUnlocked, isCompleted, percentage } = getLevelStatus(levelNum);
           
           return (
-            <Grid item xs={12} md={4} key={level}>
+            <Grid item xs={12} md={6} lg={4} key={level}>
               <motion.div
                 initial={{ opacity: 0, y: 50 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -98,25 +98,25 @@ const LLCGameMenu = ({ unlockedLevels, onLevelSelect }) => {
                     top: -20,
                     left: '50%',
                     transform: 'translateX(-50%)',
-                    width: 60,
-                    height: 60,
+                    width: 50,
+                    height: 50,
                     borderRadius: '50%',
                     background: isUnlocked ? data.color : '#ccc',
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
-                    fontSize: '1.8rem',
+                    fontSize: '1.5rem',
                     boxShadow: '0 4px 12px rgba(0,0,0,0.2)'
                   }}>
                     {!isUnlocked ? '🔒' : data.icon}
                   </Box>
 
-                  <CardContent sx={{ pt: 6, pb: 3 }}>
+                  <CardContent sx={{ pt: 5, pb: 3, px: 2 }}>
                     <Typography variant="h6" sx={{ 
                       mb: 2,
                       fontWeight: 700,
                       color: isUnlocked ? data.color : '#999',
-                      fontSize: '1.1rem'
+                      fontSize: '1rem'
                     }}>
                       {data.title}
                     </Typography>
@@ -134,12 +134,12 @@ const LLCGameMenu = ({ unlockedLevels, onLevelSelect }) => {
                     {isCompleted && (
                       <Box sx={{ mb: 3 }}>
                         <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', mb: 1 }}>
-                          <CheckCircleIcon sx={{ color: 'success.main', mr: 1, fontSize: 20 }} />
+                          <CheckCircleIcon sx={{ color: 'success.main', mr: 1, fontSize: '1rem' }} />
                           <Chip 
-                            label={`${percentage}% Complete`}
+                            label={`${percentage}%`}
                             color={percentage >= 80 ? 'success' : 'warning'}
                             size="small"
-                            sx={{ fontWeight: 600, fontSize: '0.75rem' }}
+                            sx={{ fontWeight: 600, fontSize: '0.7rem' }}
                           />
                         </Box>
                         <LinearProgress 
@@ -159,7 +159,7 @@ const LLCGameMenu = ({ unlockedLevels, onLevelSelect }) => {
                     {/* Action Button */}
                     <Button
                       variant={isUnlocked ? "contained" : "outlined"}
-                      size="medium"
+                      size="small"
                       fullWidth
                       disabled={!isUnlocked}
                       onClick={() => isUnlocked && onLevelSelect(levelNum)}
@@ -179,7 +179,7 @@ const LLCGameMenu = ({ unlockedLevels, onLevelSelect }) => {
                         }
                       }}
                     >
-                      {!isUnlocked ? 'Locked' : isCompleted ? 'Review' : 'Start'}
+                      {!isUnlocked ? 'Locked' : isCompleted ? 'Replay' : 'Start'}
                     </Button>
                   </CardContent>
                 </Card>
@@ -193,24 +193,24 @@ const LLCGameMenu = ({ unlockedLevels, onLevelSelect }) => {
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        transition={{ delay: 1, duration: 0.6 }}
+        transition={{ delay: 0.8, duration: 0.6 }}
       >
         <Card sx={{
-          maxWidth: 600,
+          maxWidth: 700,
           mx: 'auto',
-          background: 'linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%)',
-          border: '2px solid #2196f3'
+          background: 'linear-gradient(135deg, #fff3e0 0%, #ffe0b2 100%)',
+          border: '2px solid #FF9800'
         }}>
           <CardContent sx={{ p: 3 }}>
-            <Typography variant="h6" sx={{ mb: 2, color: '#1976d2', fontWeight: 600 }}>
-              🎯 Nevada LLC Formation Steps
+            <Typography variant="h6" sx={{ mb: 2, color: '#f57c00', fontWeight: 600 }}>
+              🎯 Nevada LLC Formation Process
             </Typography>
-            <Typography variant="body2" sx={{ color: 'text.secondary', lineHeight: 1.6 }}>
-              • Complete all 9 levels to master Nevada LLC formation<br />
-              • Each level covers a specific step in the process<br />
-              • Score <strong>80% or higher</strong> to unlock the next level<br />
-              • Learn the exact requirements, fees, and timelines<br />
-              • Become an expert in Nevada business formation! 🏆
+            <Typography variant="body1" sx={{ color: 'text.secondary', lineHeight: 1.6 }}>
+              • <strong>Planning:</strong> Choose your business name and structure<br />
+              • <strong>Filing:</strong> Submit Articles of Organization<br />
+              • <strong>Compliance:</strong> Operating agreements and ongoing requirements<br />
+              • <strong>Benefits:</strong> Asset protection and tax advantages<br />
+              • <strong>Maintenance:</strong> Annual filings and record keeping
             </Typography>
           </CardContent>
         </Card>
